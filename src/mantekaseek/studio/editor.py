@@ -210,3 +210,7 @@ def list_project_targets(project: StudioProject) -> list[str]:
 
 def count_project_targets(project: StudioProject) -> int:
     return len(list_project_targets(project))
+
+
+def has_exportable_operations(project: StudioProject) -> bool:
+    return bool(project.operations)
