@@ -564,3 +564,13 @@ def test_format_project_name() -> None:
 
     unnamed_project = StudioProject(name="   ", output_format="wav", tempo_bpm=128.0)
     assert format_project_name(unnamed_project) == "PROYECTO SIN NOMBRE"
+
+
+def test_format_project_summary_normalizes_name() -> None:
+    from mantekaseek.studio.editor import StudioProject, format_project_summary
+
+    project = StudioProject(name="   ", output_format="wav", tempo_bpm=128.0)
+    assert (
+        format_project_summary(project)
+        == "PROYECTO SIN NOMBRE | 128.0 BPM | WAV | No lista para exportar"
+    )

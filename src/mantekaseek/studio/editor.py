@@ -307,10 +307,11 @@ def format_tempo_label(project: StudioProject) -> str:
 
 
 def format_project_summary(project: StudioProject) -> str:
+    project_label = format_project_name(project)
     tempo_label = format_tempo_label(project)
     readiness_label = format_export_readiness(project)
-    output_fmt = project.output_format.upper()
-    return f"{project.name} | {tempo_label} | {output_fmt} | {readiness_label}"
+    output_fmt = format_output_format_label(project)
+    return f"{project_label} | {tempo_label} | {output_fmt} | {readiness_label}"
 
 
 
