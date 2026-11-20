@@ -486,3 +486,14 @@ def get_timeline_end_sec(project: StudioProject) -> float:
         if end_val is not None:
             max_end = max(max_end, float(end_val))
     return round(max_end, 6)
+
+
+def get_timeline_start_sec(project: StudioProject) -> float:
+    starts = [
+        float(start_val)
+        for op in project.operations
+        if (start_val := getattr(op, "start_sec", None)) is not None
+    ]
+    if not starts:
+        return 0.0
+    return round(min(starts), 6)
