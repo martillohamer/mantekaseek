@@ -191,3 +191,18 @@ def rename_project(project: StudioProject, new_name: str) -> StudioProject:
         tempo_bpm=project.tempo_bpm,
         operations=project.operations,
     )
+
+
+def list_project_targets(project: StudioProject) -> list[str]:
+    seen: list[str] = []
+    for op in project.operations:
+        raw_targets = getattr(op, "targets", None)
+        if raw_targets is not None:
+            candidates = list(raw_targets)
+        else:
+            source = getattr(op, "source_id", None)
+            candidates = [source] if source is not None else []
+        for target in candidates:
+            if target not in seen:
+                seen.append(target)
+    return seen
