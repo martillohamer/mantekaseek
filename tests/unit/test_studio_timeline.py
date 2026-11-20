@@ -843,3 +843,18 @@ def test_has_timeline_source() -> None:
     project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=4.0)
     assert has_timeline_source(project, "tema_a") is True
     assert has_timeline_source(project, "tema_b") is False
+
+
+def test_get_timeline_end_sec() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        cut_segment,
+        get_timeline_end_sec,
+    )
+
+    project = StudioProject(name="sesion_club", output_format="wav", tempo_bpm=128.0)
+    assert get_timeline_end_sec(project) == 0.0
+
+    project = cut_segment(project, source_id="tema_a", start_sec=2.0, end_sec=6.0)
+    project = cut_segment(project, source_id="tema_b", start_sec=10.0, end_sec=14.5)
+    assert get_timeline_end_sec(project) == 14.5

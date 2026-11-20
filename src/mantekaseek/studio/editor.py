@@ -477,3 +477,12 @@ def count_timeline_sources(project: StudioProject) -> int:
 
 def has_timeline_source(project: StudioProject, source_id: str) -> bool:
     return source_id in list_timeline_sources(project)
+
+
+def get_timeline_end_sec(project: StudioProject) -> float:
+    max_end = 0.0
+    for op in project.operations:
+        end_val = getattr(op, "end_sec", None)
+        if end_val is not None:
+            max_end = max(max_end, float(end_val))
+    return round(max_end, 6)
