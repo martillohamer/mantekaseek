@@ -301,3 +301,20 @@ def test_format_timeline_duration() -> None:
 
     project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=125.0)
     assert format_timeline_duration(project) == "02:05"
+
+
+def test_format_export_overview() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        cut_segment,
+        format_export_overview,
+    )
+
+    project = StudioProject(name="sesion_club", output_format="wav", tempo_bpm=128.0)
+    project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=60.0)
+
+    overview = format_export_overview(project)
+    assert "sesion_club" in overview
+    assert "WAV" in overview
+    assert "01:00" in overview
+    assert "MB" in overview
