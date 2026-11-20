@@ -114,3 +114,24 @@ def test_clear_studio_operations() -> None:
     assert cleaned.name == "toma_1"
     assert cleaned.tempo_bpm == 124.0
     assert cleaned.operations == ()
+
+
+def test_undo_last_studio_operation() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        cut_segment,
+        paste_segment,
+        undo_last_operation,
+    )
+
+    project = StudioProject(name="sesion_undo", output_format="wav", tempo_bpm=125.0)
+    project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=10.0)
+    project = paste_segment(project, source_id="tema_a", at_sec=10.0, repeat=1)
+    assert len(project.operations) == 2
+
+    undone = undo_last_operation(project)
+    assert len(undone.operations) == 1
+    assert undone.operations[0].kind == "cut"
+
+    empty_undone = undo_last_operation(StudioProject(name="vacio"))
+    assert empty_undone.operations == ()
