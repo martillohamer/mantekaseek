@@ -90,3 +90,23 @@ def toggle_session_recording(
         recording_active=next_active,
         session_label=next_label,
     )
+
+
+def summarize_booth_status(
+    state: BoothState,
+    sound_pads: object | None = None,
+) -> str:
+    mics_summary = ",".join(
+        f"{mic.channel}:{mic.voice_style}" if mic.active else f"{mic.channel}:off"
+        for mic in state.mics
+    )
+    automix_str = "RED_BLINK" if state.auto_mix_blinking else "OFF"
+    if not state.recording_active:
+        rec_str = "OFF"
+    elif state.session_label:
+        rec_str = state.session_label
+    else:
+        rec_str = "ON"
+    last_pad = getattr(sound_pads, "last_triggered", None)
+    pad_str = last_pad if last_pad else "none"
+    return f"mics=[{mics_summary}] | automix={automix_str} | rec={rec_str} | pad={pad_str}"
