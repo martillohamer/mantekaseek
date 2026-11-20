@@ -13,3 +13,21 @@ def test_three_mics_and_blinking_red_automix_button() -> None:
     assert active_booth.auto_mix_active is True
     assert active_booth.auto_mix_button_color == "red"
     assert active_booth.auto_mix_blinking is True
+
+
+def test_configure_mic_voice_style_and_karaoke() -> None:
+    from mantekaseek.dj.booth import BoothState, configure_mic
+
+    booth = BoothState()
+    updated = configure_mic(
+        booth,
+        channel="mic_2",
+        voice_style="robot",
+        gain_db=3.5,
+        karaoke_mode=True,
+    )
+    mics_by_channel = {m.channel: m for m in updated.mics}
+    assert mics_by_channel["mic_2"].voice_style == "robot"
+    assert mics_by_channel["mic_2"].gain_db == 3.5
+    assert mics_by_channel["mic_2"].karaoke_mode is True
+    assert mics_by_channel["mic_1"].voice_style == "natural"
