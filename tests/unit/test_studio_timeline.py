@@ -983,3 +983,18 @@ def test_get_timeline_gap_sec() -> None:
     project = cut_segment(project, source_id="tema_b", start_sec=6.0, end_sec=8.0)
     project = cut_segment(project, source_id="tema_c", start_sec=11.0, end_sec=14.0)
     assert get_timeline_gap_sec(project) == 5.0
+
+
+def test_format_timeline_gap() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        cut_segment,
+        format_timeline_gap,
+    )
+
+    project = StudioProject(name="sesion_club", output_format="wav", tempo_bpm=128.0)
+    assert format_timeline_gap(project) == "00:00"
+
+    project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=4.0)
+    project = cut_segment(project, source_id="tema_b", start_sec=69.0, end_sec=75.0)
+    assert format_timeline_gap(project) == "01:05"
