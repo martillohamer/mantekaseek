@@ -515,3 +515,14 @@ def format_timeline_span(project: StudioProject) -> str:
     total_seconds = max(0, int(round(span_sec)))
     mins, secs = divmod(total_seconds, 60)
     return f"{mins:02d}:{secs:02d}"
+
+
+def get_timeline_span_bars(project: StudioProject, beats_per_bar: int = 4) -> float:
+    if beats_per_bar <= 0:
+        msg = "Compas invalido: se requiere beats_per_bar > 0"
+        raise ValueError(msg)
+    span_sec = get_timeline_span_sec(project)
+    if span_sec <= 0.0:
+        return 0.0
+    beats = span_sec * (project.tempo_bpm / 60.0)
+    return round(beats / beats_per_bar, 6)
