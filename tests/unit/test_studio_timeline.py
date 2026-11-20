@@ -1239,3 +1239,21 @@ def test_build_batch_export_plan() -> None:
     assert len(plans) == 2
     assert plans[0]["output_path"] == "/tmp/out/intro_club.wav"
     assert plans[1]["output_path"] == "/tmp/out/cierre_set.mp3"
+
+
+def test_summarize_batch_export_plan() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        build_batch_export_plan,
+        cut_segment,
+        summarize_batch_export_plan,
+    )
+
+    base_p1 = StudioProject(name="intro_club", output_format="wav", tempo_bpm=126.0)
+    p1 = cut_segment(base_p1, source_id="t1", start_sec=0.0, end_sec=4.0)
+    p2 = StudioProject(name="cierre_set", output_format="mp3", tempo_bpm=128.0)
+    plans = build_batch_export_plan([p1, p2], output_dir="/tmp/out")
+    summary = summarize_batch_export_plan(plans)
+    assert summary["total_projects"] == 2
+    assert summary["total_operations"] == 1
+    assert summary["output_paths"] == ["/tmp/out/intro_club.wav", "/tmp/out/cierre_set.mp3"]
