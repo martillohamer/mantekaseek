@@ -672,3 +672,13 @@ def validate_export_plan(plan: dict[str, object]) -> bool:
         msg = "El plan de exportacion requiere al menos una operacion"
         raise ValueError(msg)
     return True
+
+
+def execute_export_plan(plan: dict[str, object]) -> dict[str, object]:
+    validate_export_plan(plan)
+    return {
+        "status": "ready",
+        "output_path": plan["output_path"],
+        "format": plan["format"],
+        "operations_count": plan["operations_count"],
+    }
