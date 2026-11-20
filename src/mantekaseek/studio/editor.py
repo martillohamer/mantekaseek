@@ -689,3 +689,12 @@ def format_export_result(result: dict[str, object]) -> str:
         f"[{result['status']}] {result['output_path']} "
         f"({result['format']}, {result['operations_count']} ops)"
     )
+
+
+def run_export_workflow(project: StudioProject, output_dir: str) -> dict[str, object]:
+    plan = build_export_plan(project, output_dir=output_dir)
+    result = execute_export_plan(plan)
+    return {
+        "result": result,
+        "formatted": format_export_result(result),
+    }
