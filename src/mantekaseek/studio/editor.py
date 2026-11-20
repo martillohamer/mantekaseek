@@ -92,3 +92,20 @@ def summarize_studio_project(project: StudioProject) -> str:
         f"proyecto={project.name} | formato={project.output_format} "
         f"| bpm={project.tempo_bpm:.1f} | ops={len(project.operations)}"
     )
+
+
+SUPPORTED_EXPORT_FORMATS = ("wav", "mp3", "flac")
+
+
+def build_export_plan(project: StudioProject, output_dir: str) -> dict[str, object]:
+    fmt = project.output_format.lower()
+    if fmt not in SUPPORTED_EXPORT_FORMATS:
+        msg = f"Formato de exportacion no soportado: {project.output_format}"
+        raise ValueError(msg)
+    clean_dir = output_dir.rstrip("/")
+    return {
+        "output_path": f"{clean_dir}/{project.name}.{fmt}",
+        "format": fmt,
+        "tempo_bpm": project.tempo_bpm,
+        "operations_count": len(project.operations),
+    }
