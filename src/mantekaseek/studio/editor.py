@@ -304,3 +304,10 @@ def format_tempo_label(project: StudioProject) -> str:
     if has_valid_tempo(project):
         return f"{project.tempo_bpm:.1f} BPM"
     return "Tempo no valido"
+
+
+def format_project_summary(project: StudioProject) -> str:
+    tempo_label = format_tempo_label(project)
+    readiness_label = format_export_readiness(project)
+    output_fmt = project.output_format.upper()
+    return f"{project.name} | {tempo_label} | {output_fmt} | {readiness_label}"
