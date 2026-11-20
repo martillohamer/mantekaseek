@@ -1,4 +1,5 @@
 from pathlib import Path
+
 from typer.testing import CliRunner
 
 from mantekaseek.cli.app import app
