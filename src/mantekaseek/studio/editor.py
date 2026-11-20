@@ -371,3 +371,10 @@ def get_missing_export_requirements(project: StudioProject) -> list[str]:
     if not has_operations(project):
         missing.append("operaciones en la linea de tiempo")
     return missing
+
+
+def format_missing_export_requirements(project: StudioProject) -> str:
+    missing = get_missing_export_requirements(project)
+    if not missing:
+        return "Ninguno"
+    return ", ".join(missing)
