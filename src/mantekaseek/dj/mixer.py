@@ -30,3 +30,17 @@ def suggest_next_tracks(
 
     compatible.sort(key=lambda item: item[0])
     return [item[1] for item in compatible]
+
+
+@dataclass(frozen=True)
+class MixSuggestion:
+    track_id: str
+    bpm_diff: float
+    harmonic_score: float
+
+
+def rank_mix_suggestions(suggestions: list[MixSuggestion]) -> list[MixSuggestion]:
+    return sorted(
+        suggestions,
+        key=lambda item: (-item.harmonic_score, item.bpm_diff),
+    )
