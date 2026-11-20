@@ -318,3 +318,15 @@ def test_format_export_overview() -> None:
     assert "WAV" in overview
     assert "01:00" in overview
     assert "MB" in overview
+
+
+def test_has_valid_tempo() -> None:
+    from mantekaseek.studio.editor import StudioProject, has_valid_tempo
+
+    valid = StudioProject(name="set_club", output_format="wav", tempo_bpm=128.0)
+    assert has_valid_tempo(valid) is True
+
+    too_slow = StudioProject(name="lento", output_format="wav", tempo_bpm=10.0)
+    too_fast = StudioProject(name="rapido", output_format="wav", tempo_bpm=400.0)
+    assert has_valid_tempo(too_slow) is False
+    assert has_valid_tempo(too_fast) is False

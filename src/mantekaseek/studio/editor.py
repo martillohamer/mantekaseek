@@ -242,3 +242,7 @@ def format_export_overview(project: StudioProject) -> str:
     duration = format_timeline_duration(project)
     size_mb = estimate_export_size_mb(project)
     return f"{project.name} [{fmt}] - {duration} (~{size_mb:.2f} MB)"
+
+
+def has_valid_tempo(project: StudioProject) -> bool:
+    return 20.0 <= project.tempo_bpm <= 300.0
