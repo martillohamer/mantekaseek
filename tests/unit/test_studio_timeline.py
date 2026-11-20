@@ -812,3 +812,19 @@ def test_list_timeline_sources() -> None:
     project = cut_segment(project, source_id="tema_b", start_sec=4.0, end_sec=8.0)
     project = cut_segment(project, source_id="tema_a", start_sec=8.0, end_sec=12.0)
     assert list_timeline_sources(project) == ["tema_a", "tema_b"]
+
+
+def test_count_timeline_sources() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        count_timeline_sources,
+        cut_segment,
+    )
+
+    project = StudioProject(name="sesion_club", output_format="wav", tempo_bpm=128.0)
+    assert count_timeline_sources(project) == 0
+
+    project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=4.0)
+    project = cut_segment(project, source_id="tema_b", start_sec=4.0, end_sec=8.0)
+    project = cut_segment(project, source_id="tema_a", start_sec=8.0, end_sec=12.0)
+    assert count_timeline_sources(project) == 2
