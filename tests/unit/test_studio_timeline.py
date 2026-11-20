@@ -490,3 +490,17 @@ def test_format_project_summary() -> None:
         format_project_summary(ready)
         == "sesion_club | 128.0 BPM | WAV | Lista para exportar"
     )
+
+
+def test_format_timeline_summary() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        cut_segment,
+        format_timeline_summary,
+    )
+
+    project = StudioProject(name="sesion_club", output_format="wav", tempo_bpm=128.0)
+    assert format_timeline_summary(project) == "0 operaciones | 0.0s"
+
+    edited = cut_segment(project, source_id="tema_a", start_sec=2.0, end_sec=6.0)
+    assert format_timeline_summary(edited) == "1 operaciones | 4.0s"

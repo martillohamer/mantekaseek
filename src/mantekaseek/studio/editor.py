@@ -311,3 +311,10 @@ def format_project_summary(project: StudioProject) -> str:
     readiness_label = format_export_readiness(project)
     output_fmt = project.output_format.upper()
     return f"{project.name} | {tempo_label} | {output_fmt} | {readiness_label}"
+
+
+
+def format_timeline_summary(project: StudioProject) -> str:
+    op_count = len(project.operations)
+    total_sec = sum(max(0.0, op.end_sec - op.start_sec) for op in project.operations)
+    return f"{op_count} operaciones | {total_sec:.1f}s"
