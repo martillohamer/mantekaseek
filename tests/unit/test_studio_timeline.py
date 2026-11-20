@@ -667,3 +667,24 @@ def test_format_export_diagnostic() -> None:
         format_export_diagnostic(ready)
         == "Exportacion lista: sesion_club (WAV, 128.0 BPM)"
     )
+
+
+def test_build_export_summary() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        build_export_summary,
+        cut_segment,
+    )
+
+    project = StudioProject(name="sesion_club", output_format="wav", tempo_bpm=128.0)
+    project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=4.0)
+    summary = build_export_summary(project)
+
+    assert summary == {
+        "project": "sesion_club",
+        "ready": True,
+        "format": "WAV",
+        "tempo": "128.0 BPM",
+        "missing": [],
+        "diagnostic": "Exportacion lista: sesion_club (WAV, 128.0 BPM)",
+    }
