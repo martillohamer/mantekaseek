@@ -1198,3 +1198,22 @@ def test_execute_export_plan() -> None:
     assert result["output_path"] == "/tmp/out/sesion_club.wav"
     assert result["format"] == "wav"
     assert result["operations_count"] == 1
+
+
+def test_format_export_result() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        build_export_plan,
+        cut_segment,
+        execute_export_plan,
+        format_export_result,
+    )
+
+    project = StudioProject(name="sesion_club", output_format="wav", tempo_bpm=128.0)
+    ready_project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=8.0)
+    plan = build_export_plan(ready_project, output_dir="/tmp/out")
+    result = execute_export_plan(plan)
+    formatted = format_export_result(result)
+    assert "ready" in formatted
+    assert "/tmp/out/sesion_club.wav" in formatted
+    assert "wav" in formatted
