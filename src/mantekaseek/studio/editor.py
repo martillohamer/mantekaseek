@@ -298,3 +298,9 @@ def format_export_readiness(project: StudioProject) -> str:
     if is_ready_to_export(project):
         return "Lista para exportar"
     return "No lista para exportar"
+
+
+def format_tempo_label(project: StudioProject) -> str:
+    if has_valid_tempo(project):
+        return f"{project.tempo_bpm:.1f} BPM"
+    return "Tempo no valido"
