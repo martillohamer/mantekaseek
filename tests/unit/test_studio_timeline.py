@@ -259,3 +259,17 @@ def test_count_project_targets() -> None:
     project = merge_tracks(project, track_ids=("tema_a", "tema_b"), crossfade_sec=1.0)
 
     assert count_project_targets(project) == 2
+
+
+def test_has_exportable_operations() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        cut_segment,
+        has_exportable_operations,
+    )
+
+    project = StudioProject(name="sesion_vacia", output_format="wav", tempo_bpm=128.0)
+    assert has_exportable_operations(project) is False
+
+    updated = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=4.0)
+    assert has_exportable_operations(updated) is True
