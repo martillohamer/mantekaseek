@@ -497,3 +497,14 @@ def get_timeline_start_sec(project: StudioProject) -> float:
     if not starts:
         return 0.0
     return round(min(starts), 6)
+
+
+def get_timeline_span_sec(project: StudioProject) -> float:
+    has_bounds = any(
+        getattr(op, "start_sec", None) is not None or getattr(op, "end_sec", None) is not None
+        for op in project.operations
+    )
+    if not has_bounds:
+        return 0.0
+    span = get_timeline_end_sec(project) - get_timeline_start_sec(project)
+    return round(max(0.0, span), 6)
