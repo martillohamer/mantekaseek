@@ -24,7 +24,8 @@ def suggest_next_tracks(
             continue
         if not harmonic_compatible(current_camelot, cand.camelot):
             continue
-        exact_key_bonus = 0.0 if cand.camelot.strip().upper() == current_camelot.strip().upper() else 0.5
+        is_exact_key = cand.camelot.strip().upper() == current_camelot.strip().upper()
+        exact_key_bonus = 0.0 if is_exact_key else 0.5
         compatible.append((bpm_diff + exact_key_bonus, cand))
 
     compatible.sort(key=lambda item: item[0])
