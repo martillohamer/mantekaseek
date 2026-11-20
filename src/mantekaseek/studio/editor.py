@@ -508,3 +508,10 @@ def get_timeline_span_sec(project: StudioProject) -> float:
         return 0.0
     span = get_timeline_end_sec(project) - get_timeline_start_sec(project)
     return round(max(0.0, span), 6)
+
+
+def format_timeline_span(project: StudioProject) -> str:
+    span_sec = get_timeline_span_sec(project)
+    total_seconds = max(0, int(round(span_sec)))
+    mins, secs = divmod(total_seconds, 60)
+    return f"{mins:02d}:{secs:02d}"
