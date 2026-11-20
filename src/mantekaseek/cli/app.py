@@ -103,3 +103,28 @@ def gain_plan(
     projected_peak = round(peak + gain_db, 1)
     sign = "+" if gain_db > 0 else ""
     typer.echo(f"gain={sign}{gain_db:.1f}dB | projected_peak={projected_peak:.1f}dBFS")
+
+
+@app.command("gain-probe")
+def gain_probe(
+    track_id: str = typer.Option(..., "--track-id", help="Identificador de la pista"),
+    loudnorm_output: str = typer.Option(
+        ..., "--loudnorm-output", help="Salida de loudnorm"
+    ),
+    target_lufs: float = typer.Option(-14.0, "--target-lufs", help="LUFS objetivo"),
+    max_peak_dbfs: float = typer.Option(
+        -1.0, "--max-peak-dbfs", help="Pico max dBFS"
+    ),
+) -> None:
+    from mantekaseek.library.level_probe import plan_gain_from_loudnorm
+
+    plan = plan_gain_from_loudnorm(
+        track_id=track_id,
+        raw_output=loudnorm_output,
+        target_lufs=target_lufs,
+        max_peak_dbfs=max_peak_dbfs,
+    )
+    typer.echo(
+        f"track_id={plan.track_id} gain_db={plan.gain_db} "
+        f"projected_peak_dbfs={plan.projected_peak_dbfs}"
+    )

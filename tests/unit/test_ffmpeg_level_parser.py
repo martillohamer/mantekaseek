@@ -77,3 +77,29 @@ def test_analyze_audio_file_gain_with_runner() -> None:
     assert "/tmp/demo.mp3" in runner.calls[0]
     assert plan.gain_db == 1.5
     assert plan.projected_peak_dbfs == -1.0
+
+
+def test_cli_gain_probe_from_loudnorm_json() -> None:
+    from typer.testing import CliRunner
+
+    from mantekaseek.cli.app import app
+
+    runner = CliRunner()
+    payload = "{\"input_i\": \"-19.00\", \"input_tp\": \"-3.00\"}"
+    result = runner.invoke(
+        app,
+        [
+            "gain-probe",
+            "--track-id",
+            "pista_cli",
+            "--loudnorm-output",
+            payload,
+            "--target-lufs",
+            "-14.0",
+            "--max-peak-dbfs",
+            "-1.0",
+        ],
+    )
+    assert result.exit_code == 0
+    assert "pista_cli" in result.stdout
+    assert "2.0" in result.stdout
