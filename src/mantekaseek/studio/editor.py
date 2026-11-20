@@ -526,3 +526,8 @@ def get_timeline_span_bars(project: StudioProject, beats_per_bar: int = 4) -> fl
         return 0.0
     beats = span_sec * (project.tempo_bpm / 60.0)
     return round(beats / beats_per_bar, 6)
+
+
+def format_timeline_span_bars(project: StudioProject, beats_per_bar: int = 4) -> str:
+    bars = get_timeline_span_bars(project, beats_per_bar=beats_per_bar)
+    return f"{bars:.2f}"
