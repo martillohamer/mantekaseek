@@ -411,3 +411,13 @@ def format_export_summary(project: StudioProject) -> str:
         f"Faltantes: {missing_text}\n"
         f"Diagnostico: {summary['diagnostic']}"
     )
+
+
+def estimate_timeline_duration_sec(project: StudioProject) -> float:
+    total = 0.0
+    for op in project.operations:
+        start_val = getattr(op, "start_sec", None)
+        end_val = getattr(op, "end_sec", None)
+        if start_val is not None and end_val is not None:
+            total += max(0.0, float(end_val) - float(start_val))
+    return round(total, 6)
