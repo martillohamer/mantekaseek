@@ -229,3 +229,9 @@ def estimate_export_size_mb(project: StudioProject) -> float:
         return 0.0
     rate = _MB_PER_SECOND.get(project.output_format.lower(), 2.4)
     return round(duration_sec * rate, 2)
+
+
+def format_timeline_duration(project: StudioProject) -> str:
+    total_seconds = max(0, int(round(estimate_timeline_duration(project))))
+    minutes, seconds = divmod(total_seconds, 60)
+    return f"{minutes:02d}:{seconds:02d}"
