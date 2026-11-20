@@ -288,3 +288,7 @@ def has_operations(project: StudioProject) -> bool:
 
 def count_operations(project: StudioProject) -> int:
     return len(project.operations)
+
+
+def is_ready_to_export(project: StudioProject) -> bool:
+    return has_valid_tempo(project) and has_exportable_operations(project)
