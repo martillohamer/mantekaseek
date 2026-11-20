@@ -74,3 +74,11 @@ def select_best_mix_suggestions(
     if limit is not None and limit >= 0:
         return ranked[:limit]
     return ranked
+
+
+def format_mix_suggestion(suggestion: MixSuggestion) -> str:
+    return (
+        f"{suggestion.track_id} | "
+        f"armonia={suggestion.harmonic_score:.1f} | "
+        f"diff_bpm={suggestion.bpm_diff:.1f}"
+    )
