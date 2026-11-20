@@ -446,3 +446,17 @@ def test_is_ready_to_export() -> None:
 
     ready = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=4.0)
     assert is_ready_to_export(ready) is True
+
+
+def test_format_export_readiness() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        cut_segment,
+        format_export_readiness,
+    )
+
+    project = StudioProject(name="sesion_export", output_format="wav", tempo_bpm=128.0)
+    assert format_export_readiness(project) == "No lista para exportar"
+
+    ready = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=4.0)
+    assert format_export_readiness(ready) == "Lista para exportar"
