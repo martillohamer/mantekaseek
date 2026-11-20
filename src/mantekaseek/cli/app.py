@@ -7,6 +7,7 @@ from mantekaseek.core.config import load_config
 from mantekaseek.core.database import Database
 from mantekaseek.core.logging import setup_logging
 from mantekaseek.dj.mixer import TrackCandidateDJ, suggest_next_tracks
+from mantekaseek.library.gain import AudioLevelInfo, calculate_safe_gain_db
 from mantekaseek.library.keys import key_to_camelot, key_to_open_key
 from mantekaseek.spotify.parser import parse_spotify_url
 
@@ -87,3 +88,18 @@ def dj_suggest(
 
     for item in suggestions:
         typer.echo(f"{item.track_id}: {item.title} ({item.bpm} BPM, {item.camelot})")
+
+
+@app.command("gain-plan")
+def gain_plan(
+    lufs: float = typer.Option(..., "--lufs", help="Sonoridad integrada medida en LUFS."),
+    peak: float = typer.Option(..., "--peak", help="Pico maximo medido en dBFS."),
+    target_lufs: float = typer.Option(-14.0, "--target-lufs", help="Objetivo en LUFS."),
+    max_peak: float = typer.Option(-1.0, "--max-peak", help="Techo seguro de pico en dBFS."),
+) -> None:
+    """Calcula una ganancia segura sin superar el techo de pico."""
+    info = AudioLevelInfo(track_id="cli", integrated_lufs=lufs, peak_dbfs=peak)
+    gain_db = calculate_safe_gain_db(info, target_lufs=target_lufs, max_peak_dbfs=max_peak)
+    projected_peak = round(peak + gain_db, 1)
+    sign = "+" if gain_db > 0 else ""
+    typer.echo(f"gain={sign}{gain_db:.1f}dB | projected_peak={projected_peak:.1f}dBFS")
