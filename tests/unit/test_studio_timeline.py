@@ -534,3 +534,13 @@ def test_format_output_format_label() -> None:
 
     empty_project = StudioProject(name="sesion_vacia", output_format="   ", tempo_bpm=128.0)
     assert format_output_format_label(empty_project) == "FORMATO NO DEFINIDO"
+
+
+def test_has_output_format() -> None:
+    from mantekaseek.studio.editor import StudioProject, has_output_format
+
+    wav_project = StudioProject(name="sesion_wav", output_format="wav", tempo_bpm=128.0)
+    assert has_output_format(wav_project) is True
+
+    empty_project = StudioProject(name="sesion_vacia", output_format="   ", tempo_bpm=128.0)
+    assert has_output_format(empty_project) is False

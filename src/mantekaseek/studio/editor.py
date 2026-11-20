@@ -331,3 +331,7 @@ def format_output_format_label(project: StudioProject) -> str:
     if not cleaned:
         return "FORMATO NO DEFINIDO"
     return cleaned
+
+
+def has_output_format(project: StudioProject) -> bool:
+    return format_output_format_label(project) != "FORMATO NO DEFINIDO"
