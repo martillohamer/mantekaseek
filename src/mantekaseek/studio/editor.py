@@ -206,3 +206,7 @@ def list_project_targets(project: StudioProject) -> list[str]:
             if target not in seen:
                 seen.append(target)
     return seen
+
+
+def count_project_targets(project: StudioProject) -> int:
+    return len(list_project_targets(project))
