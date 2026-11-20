@@ -1,5 +1,11 @@
+from pathlib import Path
+
 from mantekaseek.library.gain import AudioLevelInfo
-from mantekaseek.library.level_probe import parse_loudnorm_output, plan_gain_from_loudnorm
+from mantekaseek.library.level_probe import (
+    analyze_audio_file_gain,
+    parse_loudnorm_output,
+    plan_gain_from_loudnorm,
+)
 
 
 def test_parse_loudnorm_output_extracts_lufs_and_peak() -> None:
@@ -38,4 +44,36 @@ def test_plan_gain_from_loudnorm_output() -> None:
     )
     assert plan.track_id == "pista_02"
     assert plan.gain_db == 2.0
+    assert plan.projected_peak_dbfs == -1.0
+
+
+class FakeFfmpegRunner:
+    def __init__(self, stderr_output: str) -> None:
+        self.stderr_output = stderr_output
+        self.calls: list[list[str]] = []
+
+    def run_ffmpeg(self, args: list[str]) -> str:
+        self.calls.append(args)
+        return self.stderr_output
+
+
+def test_analyze_audio_file_gain_with_runner() -> None:
+    runner = FakeFfmpegRunner(
+        """
+        {
+            "input_i" : "-18.00",
+            "input_tp" : "-2.50"
+        }
+        """
+    )
+    plan = analyze_audio_file_gain(
+        track_id="pista_03",
+        audio_path=Path("/tmp/demo.mp3"),
+        runner=runner,
+        target_lufs=-14.0,
+        max_peak_dbfs=-1.0,
+    )
+    assert len(runner.calls) == 1
+    assert "/tmp/demo.mp3" in runner.calls[0]
+    assert plan.gain_db == 1.5
     assert plan.projected_peak_dbfs == -1.0
