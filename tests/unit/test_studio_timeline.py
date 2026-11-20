@@ -97,3 +97,20 @@ def test_cli_studio_plan() -> None:
     assert result.exit_code == 0
     assert "sesion_live" in result.stdout
     assert "/tmp/studio_out/sesion_live.wav" in result.stdout
+
+
+def test_clear_studio_operations() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        clear_operations,
+        cut_segment,
+    )
+
+    project = StudioProject(name="toma_1", output_format="wav", tempo_bpm=124.0)
+    project = cut_segment(project, source_id="loop_a", start_sec=0.0, end_sec=8.0)
+    assert len(project.operations) == 1
+
+    cleaned = clear_operations(project)
+    assert cleaned.name == "toma_1"
+    assert cleaned.tempo_bpm == 124.0
+    assert cleaned.operations == ()
