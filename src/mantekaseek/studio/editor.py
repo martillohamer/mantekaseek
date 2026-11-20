@@ -109,3 +109,18 @@ def build_export_plan(project: StudioProject, output_dir: str) -> dict[str, obje
         "tempo_bpm": project.tempo_bpm,
         "operations_count": len(project.operations),
     }
+
+
+def estimate_timeline_duration(project: StudioProject, block_sec: float = 4.0) -> float:
+    if block_sec <= 0:
+        msg = "Duracion de bloque invalida: se requiere block_sec > 0"
+        raise ValueError(msg)
+    total = 0.0
+    for op in project.operations:
+        if op.kind == "cut":
+            total += op.end_sec - op.start_sec
+        elif op.kind == "paste":
+            total += op.repeat * block_sec
+        elif op.kind == "merge":
+            total += op.crossfade_sec
+    return round(total, 6)
