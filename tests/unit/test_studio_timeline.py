@@ -205,3 +205,21 @@ def test_set_output_format() -> None:
 
     with pytest.raises(ValueError):
         set_output_format(updated, output_format="aac")
+
+
+def test_rename_studio_project() -> None:
+    import pytest
+
+    from mantekaseek.studio.editor import StudioProject, cut_segment, rename_project
+
+    project = StudioProject(name="borrador_1", output_format="wav", tempo_bpm=128.0)
+    project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=8.0)
+
+    renamed = rename_project(project, new_name="master_final")
+    assert renamed.name == "master_final"
+    assert renamed.output_format == "wav"
+    assert renamed.tempo_bpm == 128.0
+    assert len(renamed.operations) == 1
+
+    with pytest.raises(ValueError):
+        rename_project(renamed, new_name="   ")
