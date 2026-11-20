@@ -142,3 +142,10 @@ def undo_last_operation(project: StudioProject) -> StudioProject:
         tempo_bpm=project.tempo_bpm,
         operations=project.operations[:-1],
     )
+
+
+def count_operations_by_kind(project: StudioProject) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for op in project.operations:
+        counts[op.kind] = counts.get(op.kind, 0) + 1
+    return counts
