@@ -752,3 +752,17 @@ def test_format_timeline_bars() -> None:
 
     project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=8.0)
     assert format_timeline_bars(project) == "4.0 compases"
+
+
+def test_has_timeline_operations() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        cut_segment,
+        has_timeline_operations,
+    )
+
+    project = StudioProject(name="sesion_club", output_format="wav", tempo_bpm=128.0)
+    assert has_timeline_operations(project) is False
+
+    project = cut_segment(project, source_id="tema_a", start_sec=1.0, end_sec=4.0)
+    assert has_timeline_operations(project) is True
