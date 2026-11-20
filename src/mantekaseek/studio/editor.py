@@ -165,3 +165,16 @@ def set_project_tempo(project: StudioProject, bpm: float) -> StudioProject:
         tempo_bpm=bpm,
         operations=project.operations,
     )
+
+
+def set_output_format(project: StudioProject, output_format: str) -> StudioProject:
+    fmt = output_format.lower()
+    if fmt not in SUPPORTED_EXPORT_FORMATS:
+        msg = f"Formato de salida no soportado: {output_format}"
+        raise ValueError(msg)
+    return StudioProject(
+        name=project.name,
+        output_format=fmt,
+        tempo_bpm=project.tempo_bpm,
+        operations=project.operations,
+    )
