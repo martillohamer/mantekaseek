@@ -14,3 +14,26 @@ def test_suggest_next_tracks_prioritizes_harmonic_and_bpm_fit() -> None:
         max_bpm_delta=4.0,
     )
     assert [s.track_id for s in suggestions] == ["2", "1"]
+
+
+def test_rank_mix_suggestions_prioritizes_harmonic_and_bpm() -> None:
+    from mantekaseek.dj.mixer import MixSuggestion, rank_mix_suggestions
+
+    sug_bpm_lejos = MixSuggestion(
+        track_id="t_bpm_lejos",
+        bpm_diff=8.0,
+        harmonic_score=1.0,
+    )
+    sug_ideal = MixSuggestion(
+        track_id="t_ideal",
+        bpm_diff=0.5,
+        harmonic_score=1.0,
+    )
+    sug_armonia_baja = MixSuggestion(
+        track_id="t_armonia_baja",
+        bpm_diff=0.5,
+        harmonic_score=0.2,
+    )
+
+    ranked = rank_mix_suggestions([sug_bpm_lejos, sug_armonia_baja, sug_ideal])
+    assert [item.track_id for item in ranked] == ["t_ideal", "t_bpm_lejos", "t_armonia_baja"]
