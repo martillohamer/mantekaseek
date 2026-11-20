@@ -135,3 +135,22 @@ def test_undo_last_studio_operation() -> None:
 
     empty_undone = undo_last_operation(StudioProject(name="vacio"))
     assert empty_undone.operations == ()
+
+
+def test_count_operations_by_kind() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        count_operations_by_kind,
+        cut_segment,
+        merge_tracks,
+        paste_segment,
+    )
+
+    project = StudioProject(name="mezcla_final", output_format="wav", tempo_bpm=128.0)
+    project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=16.0)
+    project = cut_segment(project, source_id="tema_b", start_sec=4.0, end_sec=20.0)
+    project = paste_segment(project, source_id="tema_a", at_sec=16.0, repeat=1)
+    project = merge_tracks(project, track_ids=("tema_a", "tema_b"), crossfade_sec=2.0)
+
+    counts = count_operations_by_kind(project)
+    assert counts == {"cut": 2, "paste": 1, "merge": 1}
