@@ -346,3 +346,11 @@ def format_project_name(project: StudioProject) -> str:
     if has_project_name(project):
         return project.name.strip()
     return "PROYECTO SIN NOMBRE"
+
+
+def has_complete_export_config(project: StudioProject) -> bool:
+    return (
+        has_project_name(project)
+        and has_output_format(project)
+        and is_ready_to_export(project)
+    )

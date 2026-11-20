@@ -574,3 +574,23 @@ def test_format_project_summary_normalizes_name() -> None:
         format_project_summary(project)
         == "PROYECTO SIN NOMBRE | 128.0 BPM | WAV | No lista para exportar"
     )
+
+
+def test_has_complete_export_config() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        cut_segment,
+        has_complete_export_config,
+    )
+
+    incomplete_name = StudioProject(name="   ", output_format="wav", tempo_bpm=128.0)
+    incomplete_name = cut_segment(incomplete_name, source_id="tema_a", start_sec=0.0, end_sec=4.0)
+    assert has_complete_export_config(incomplete_name) is False
+
+    incomplete_fmt = StudioProject(name="sesion_club", output_format="   ", tempo_bpm=128.0)
+    incomplete_fmt = cut_segment(incomplete_fmt, source_id="tema_a", start_sec=0.0, end_sec=4.0)
+    assert has_complete_export_config(incomplete_fmt) is False
+
+    complete = StudioProject(name="sesion_club", output_format="wav", tempo_bpm=128.0)
+    complete = cut_segment(complete, source_id="tema_a", start_sec=0.0, end_sec=4.0)
+    assert has_complete_export_config(complete) is True
