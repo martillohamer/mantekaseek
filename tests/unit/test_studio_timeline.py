@@ -828,3 +828,18 @@ def test_count_timeline_sources() -> None:
     project = cut_segment(project, source_id="tema_b", start_sec=4.0, end_sec=8.0)
     project = cut_segment(project, source_id="tema_a", start_sec=8.0, end_sec=12.0)
     assert count_timeline_sources(project) == 2
+
+
+def test_has_timeline_source() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        cut_segment,
+        has_timeline_source,
+    )
+
+    project = StudioProject(name="sesion_club", output_format="wav", tempo_bpm=128.0)
+    assert has_timeline_source(project, "tema_a") is False
+
+    project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=4.0)
+    assert has_timeline_source(project, "tema_a") is True
+    assert has_timeline_source(project, "tema_b") is False
