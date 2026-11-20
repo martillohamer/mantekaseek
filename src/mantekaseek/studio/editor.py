@@ -388,3 +388,14 @@ def format_export_diagnostic(project: StudioProject) -> str:
         return f"Exportacion lista: {project_label} ({output_fmt}, {tempo_label})"
     missing_label = format_missing_export_requirements(project)
     return f"Exportacion bloqueada: falta {missing_label}"
+
+
+def build_export_summary(project: StudioProject) -> dict[str, object]:
+    return {
+        "project": format_project_name(project),
+        "ready": has_complete_export_config(project),
+        "format": format_output_format_label(project),
+        "tempo": format_tempo_label(project),
+        "missing": get_missing_export_requirements(project),
+        "diagnostic": format_export_diagnostic(project),
+    }
