@@ -235,3 +235,10 @@ def format_timeline_duration(project: StudioProject) -> str:
     total_seconds = max(0, int(round(estimate_timeline_duration(project))))
     minutes, seconds = divmod(total_seconds, 60)
     return f"{minutes:02d}:{seconds:02d}"
+
+
+def format_export_overview(project: StudioProject) -> str:
+    fmt = project.output_format.upper()
+    duration = format_timeline_duration(project)
+    size_mb = estimate_export_size_mb(project)
+    return f"{project.name} [{fmt}] - {duration} (~{size_mb:.2f} MB)"
