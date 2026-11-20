@@ -206,3 +206,38 @@ def sound_pad(
     bank = trigger_sound_pad(SoundPadBank(), pad_name=pad_name, level_db=level_db)
     active_level = bank.pad_levels_db.get(pad_name, 0.0)
     typer.echo(f"pad={bank.last_triggered} | nivel_db={active_level:.1f}")
+
+
+@app.command("studio-plan")
+def studio_plan(
+    project_name: Annotated[
+        str,
+        typer.Argument(..., help="Nombre del proyecto en Mini Studio"),
+    ],
+    output_format: Annotated[
+        str,
+        typer.Option("--format", help="Formato de salida (wav, mp3, flac)"),
+    ] = "wav",
+    tempo_bpm: Annotated[
+        float,
+        typer.Option("--tempo-bpm", help="Tempo del proyecto en BPM"),
+    ] = 120.0,
+    output_dir: Annotated[
+        str,
+        typer.Option("--output-dir", help="Directorio de salida para la exportacion"),
+    ] = "out",
+) -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        build_export_plan,
+        summarize_studio_project,
+    )
+
+    project = StudioProject(
+        name=project_name,
+        output_format=output_format,
+        tempo_bpm=tempo_bpm,
+    )
+    summary = summarize_studio_project(project)
+    plan = build_export_plan(project, output_dir=output_dir)
+    typer.echo(f"{summary} | salida={plan['output_path']}")

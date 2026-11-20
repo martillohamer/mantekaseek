@@ -73,3 +73,27 @@ def test_estimate_timeline_duration() -> None:
 
     duration = estimate_timeline_duration(project, block_sec=4.0)
     assert duration == 29.5
+
+
+def test_cli_studio_plan() -> None:
+    from typer.testing import CliRunner
+
+    from mantekaseek.cli.app import app
+
+    runner = CliRunner()
+    result = runner.invoke(
+        app,
+        [
+            "studio-plan",
+            "sesion_live",
+            "--format",
+            "wav",
+            "--tempo-bpm",
+            "126.0",
+            "--output-dir",
+            "/tmp/studio_out",
+        ],
+    )
+    assert result.exit_code == 0
+    assert "sesion_live" in result.stdout
+    assert "/tmp/studio_out/sesion_live.wav" in result.stdout
