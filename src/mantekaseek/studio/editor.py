@@ -360,3 +360,14 @@ def format_export_config_status(project: StudioProject) -> str:
     if has_complete_export_config(project):
         return "Configuracion completa"
     return "Configuracion incompleta"
+
+
+def get_missing_export_requirements(project: StudioProject) -> list[str]:
+    missing: list[str] = []
+    if not has_project_name(project):
+        missing.append("nombre del proyecto")
+    if not has_output_format(project):
+        missing.append("formato de salida")
+    if not has_operations(project):
+        missing.append("operaciones en la linea de tiempo")
+    return missing
