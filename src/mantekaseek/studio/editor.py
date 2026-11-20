@@ -531,3 +531,21 @@ def get_timeline_span_bars(project: StudioProject, beats_per_bar: int = 4) -> fl
 def format_timeline_span_bars(project: StudioProject, beats_per_bar: int = 4) -> str:
     bars = get_timeline_span_bars(project, beats_per_bar=beats_per_bar)
     return f"{bars:.2f}"
+
+
+def has_timeline_gaps(project: StudioProject) -> bool:
+    intervals: list[tuple[float, float]] = []
+    for op in project.operations:
+        start_val = getattr(op, "start_sec", None)
+        end_val = getattr(op, "end_sec", None)
+        if start_val is not None and end_val is not None:
+            intervals.append((float(start_val), float(end_val)))
+    if len(intervals) < 2:
+        return False
+    intervals.sort(key=lambda pair: (pair[0], pair[1]))
+    current_end = intervals[0][1]
+    for start_sec, end_sec in intervals[1:]:
+        if start_sec > current_end + 1e-9:
+            return True
+        current_end = max(current_end, end_sec)
+    return False
