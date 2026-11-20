@@ -45,3 +45,7 @@ def plan_batch_leveling(
             projected_peak_dbfs=projected_peak,
         )
     return plans
+
+
+def is_gain_clipped(plan: GainPlan, max_peak_dbfs: float = -1.0) -> bool:
+    return plan.projected_peak_dbfs >= max_peak_dbfs

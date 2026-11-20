@@ -27,3 +27,19 @@ def test_plan_batch_leveling_aligns_tracks() -> None:
     plans = plan_batch_leveling(tracks, target_lufs=-14.0, max_peak_dbfs=-1.0)
     assert plans["a"].gain_db == 3.0
     assert plans["b"].gain_db == -4.0
+
+
+
+def test_is_gain_clipped() -> None:
+    from mantekaseek.library.gain import AudioLevelInfo, is_gain_clipped, plan_batch_leveling
+
+    plans = plan_batch_leveling(
+        [
+            AudioLevelInfo(track_id="t1", integrated_lufs=-20.0, peak_dbfs=-2.0),
+            AudioLevelInfo(track_id="t2", integrated_lufs=-16.0, peak_dbfs=-4.0),
+        ],
+        target_lufs=-14.0,
+        max_peak_dbfs=-1.0,
+    )
+    assert is_gain_clipped(plans["t1"], max_peak_dbfs=-1.0) is True
+    assert is_gain_clipped(plans["t2"], max_peak_dbfs=-1.0) is False
