@@ -110,3 +110,18 @@ def summarize_booth_status(
     last_pad = getattr(sound_pads, "last_triggered", None)
     pad_str = last_pad if last_pad else "none"
     return f"mics=[{mics_summary}] | automix={automix_str} | rec={rec_str} | pad={pad_str}"
+
+
+def plan_automix_transition(
+    state: BoothState,
+    candidates: list[object],
+    limit: int = 1,
+) -> object | None:
+    if not state.auto_mix_active:
+        return None
+    from mantekaseek.dj.mixer import select_best_mix_suggestions
+
+    selected = select_best_mix_suggestions(candidates, limit=limit)
+    if not selected:
+        return None
+    return selected[0]
