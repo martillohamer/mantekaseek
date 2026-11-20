@@ -254,3 +254,10 @@ def estimate_bars(project: StudioProject) -> int:
         return 0
     seconds_per_bar = (60.0 / project.tempo_bpm) * 4.0
     return max(0, int(duration_sec // seconds_per_bar))
+
+
+def format_bars_label(project: StudioProject) -> str:
+    bars = estimate_bars(project)
+    if bars == 1:
+        return "1 compas"
+    return f"{bars} compases"

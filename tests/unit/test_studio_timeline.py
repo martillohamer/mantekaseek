@@ -341,3 +341,18 @@ def test_estimate_bars() -> None:
     # A 120 BPM: 1 beat = 0.5s, 1 compas de 4/4 = 2.0s -> 16.0s son 8 compases
     project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=16.0)
     assert estimate_bars(project) == 8
+
+
+def test_format_bars_label() -> None:
+    from mantekaseek.studio.editor import StudioProject, cut_segment, format_bars_label
+
+    project = StudioProject(name="sesion_120", output_format="wav", tempo_bpm=120.0)
+    assert format_bars_label(project) == "0 compases"
+
+    # 2.0s a 120 BPM en 4/4 = 1 compas
+    one_bar = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=2.0)
+    assert format_bars_label(one_bar) == "1 compas"
+
+    # 16.0s a 120 BPM en 4/4 = 8 compases
+    eight_bars = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=16.0)
+    assert format_bars_label(eight_bars) == "8 compases"
