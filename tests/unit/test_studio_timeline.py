@@ -382,3 +382,13 @@ def test_format_beats_label() -> None:
     # 4.0s a 120 BPM -> 8 pulsos
     eight_beats = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=4.0)
     assert format_beats_label(eight_beats) == "8 pulsos"
+
+
+def test_has_project_targets() -> None:
+    from mantekaseek.studio.editor import StudioProject, cut_segment, has_project_targets
+
+    project = StudioProject(name="sesion_vacia", output_format="wav", tempo_bpm=128.0)
+    assert has_project_targets(project) is False
+
+    project = cut_segment(project, source_id="tema_base", start_sec=0.0, end_sec=8.0)
+    assert has_project_targets(project) is True

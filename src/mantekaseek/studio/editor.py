@@ -276,3 +276,7 @@ def format_beats_label(project: StudioProject) -> str:
     if beats == 1:
         return "1 pulso"
     return f"{beats} pulsos"
+
+
+def has_project_targets(project: StudioProject) -> bool:
+    return count_project_targets(project) > 0
