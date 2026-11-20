@@ -738,3 +738,17 @@ def test_estimate_timeline_bars() -> None:
     # A 120 BPM: 2.0 s por compas de 4/4 -> 8.0 s equivalen a 4.0 compases
     project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=8.0)
     assert estimate_timeline_bars(project) == 4.0
+
+
+def test_format_timeline_bars() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        cut_segment,
+        format_timeline_bars,
+    )
+
+    project = StudioProject(name="sesion_club", output_format="wav", tempo_bpm=120.0)
+    assert format_timeline_bars(project) == "0.0 compases"
+
+    project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=8.0)
+    assert format_timeline_bars(project) == "4.0 compases"
