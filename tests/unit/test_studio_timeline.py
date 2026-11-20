@@ -967,3 +967,19 @@ def test_count_timeline_gaps() -> None:
     project = cut_segment(project, source_id="tema_b", start_sec=6.0, end_sec=8.0)
     project = cut_segment(project, source_id="tema_c", start_sec=11.0, end_sec=14.0)
     assert count_timeline_gaps(project) == 2
+
+
+def test_get_timeline_gap_sec() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        cut_segment,
+        get_timeline_gap_sec,
+    )
+
+    project = StudioProject(name="sesion_club", output_format="wav", tempo_bpm=128.0)
+    assert get_timeline_gap_sec(project) == 0.0
+
+    project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=4.0)
+    project = cut_segment(project, source_id="tema_b", start_sec=6.0, end_sec=8.0)
+    project = cut_segment(project, source_id="tema_c", start_sec=11.0, end_sec=14.0)
+    assert get_timeline_gap_sec(project) == 5.0
