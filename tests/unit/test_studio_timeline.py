@@ -1217,3 +1217,14 @@ def test_format_export_result() -> None:
     assert "ready" in formatted
     assert "/tmp/out/sesion_club.wav" in formatted
     assert "wav" in formatted
+
+
+def test_run_export_workflow() -> None:
+    from mantekaseek.studio.editor import StudioProject, cut_segment, run_export_workflow
+
+    project = StudioProject(name="sesion_club", output_format="wav", tempo_bpm=128.0)
+    ready_project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=8.0)
+    workflow = run_export_workflow(ready_project, output_dir="/tmp/out")
+    assert workflow["result"]["status"] == "ready"
+    assert workflow["result"]["output_path"] == "/tmp/out/sesion_club.wav"
+    assert "/tmp/out/sesion_club.wav" in str(workflow["formatted"])
