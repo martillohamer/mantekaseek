@@ -888,3 +888,18 @@ def test_get_timeline_span_sec() -> None:
     project = cut_segment(project, source_id="tema_a", start_sec=2.5, end_sec=6.0)
     project = cut_segment(project, source_id="tema_b", start_sec=10.0, end_sec=14.5)
     assert get_timeline_span_sec(project) == 12.0
+
+
+def test_format_timeline_span() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        cut_segment,
+        format_timeline_span,
+    )
+
+    project = StudioProject(name="sesion_club", output_format="wav", tempo_bpm=128.0)
+    assert format_timeline_span(project) == "00:00"
+
+    project = cut_segment(project, source_id="tema_a", start_sec=2.5, end_sec=6.0)
+    project = cut_segment(project, source_id="tema_b", start_sec=10.0, end_sec=74.5)
+    assert format_timeline_span(project) == "01:12"
