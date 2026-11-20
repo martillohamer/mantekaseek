@@ -153,3 +153,15 @@ def count_operations_by_kind(project: StudioProject) -> dict[str, int]:
 
 def operations_for_target(project: StudioProject, target_id: str) -> list[StudioOperation]:
     return [op for op in project.operations if target_id in op.targets]
+
+
+def set_project_tempo(project: StudioProject, bpm: float) -> StudioProject:
+    if bpm <= 0:
+        msg = "Tempo invalido: se requiere bpm > 0"
+        raise ValueError(msg)
+    return StudioProject(
+        name=project.name,
+        output_format=project.output_format,
+        tempo_bpm=bpm,
+        operations=project.operations,
+    )
