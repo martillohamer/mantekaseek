@@ -1,9 +1,15 @@
 import json
 import re
+from pathlib import Path
+from typing import Protocol
 
 from mantekaseek.library.gain import AudioLevelInfo, GainPlan, plan_batch_leveling
 
 _JSON_BLOCK_RE = re.compile(r"\{[^{}]*\}", re.DOTALL)
+
+
+class FfmpegRunner(Protocol):
+    def run_ffmpeg(self, args: list[str]) -> str: ...
 
 
 def parse_loudnorm_output(track_id: str, raw_output: str) -> AudioLevelInfo:
@@ -49,3 +55,31 @@ def plan_gain_from_loudnorm(
         max_peak_dbfs=max_peak_dbfs,
     )
     return plans[track_id]
+
+
+def analyze_audio_file_gain(
+    track_id: str,
+    audio_path: Path,
+    runner: FfmpegRunner,
+    target_lufs: float = -14.0,
+    max_peak_dbfs: float = -1.0,
+) -> GainPlan:
+    args = [
+        "ffmpeg",
+        "-hide_banner",
+        "-nostats",
+        "-i",
+        str(audio_path),
+        "-af",
+        f"loudnorm=I={target_lufs}:TP={max_peak_dbfs}:print_format=json",
+        "-f",
+        "null",
+        "-",
+    ]
+    raw_output = runner.run_ffmpeg(args)
+    return plan_gain_from_loudnorm(
+        track_id=track_id,
+        raw_output=raw_output,
+        target_lufs=target_lufs,
+        max_peak_dbfs=max_peak_dbfs,
+    )
