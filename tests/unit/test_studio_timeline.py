@@ -402,3 +402,19 @@ def test_has_operations() -> None:
 
     project = cut_segment(project, source_id="tema_base", start_sec=0.0, end_sec=4.0)
     assert has_operations(project) is True
+
+
+def test_count_operations() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        count_operations,
+        cut_segment,
+        paste_segment,
+    )
+
+    project = StudioProject(name="sesion_test", output_format="wav", tempo_bpm=128.0)
+    assert count_operations(project) == 0
+
+    project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=4.0)
+    project = paste_segment(project, source_id="tema_b", at_sec=4.0)
+    assert count_operations(project) == 2

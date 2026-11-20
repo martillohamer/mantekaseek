@@ -284,3 +284,7 @@ def has_project_targets(project: StudioProject) -> bool:
 
 def has_operations(project: StudioProject) -> bool:
     return len(project.operations) > 0
+
+
+def count_operations(project: StudioProject) -> int:
+    return len(project.operations)
