@@ -188,3 +188,20 @@ def test_set_project_tempo() -> None:
 
     with pytest.raises(ValueError):
         set_project_tempo(updated, bpm=0.0)
+
+
+def test_set_output_format() -> None:
+    import pytest
+
+    from mantekaseek.studio.editor import StudioProject, cut_segment, set_output_format
+
+    project = StudioProject(name="master_final", output_format="wav", tempo_bpm=128.0)
+    project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=8.0)
+
+    updated = set_output_format(project, output_format="MP3")
+    assert updated.output_format == "mp3"
+    assert updated.tempo_bpm == 128.0
+    assert len(updated.operations) == 1
+
+    with pytest.raises(ValueError):
+        set_output_format(updated, output_format="aac")
