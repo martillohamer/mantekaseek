@@ -439,3 +439,16 @@ def format_timeline_bars(project: StudioProject) -> str:
 
 def has_timeline_operations(project: StudioProject) -> bool:
     return bool(project.operations)
+
+
+def get_last_source_id(project: StudioProject) -> str | None:
+    for op in reversed(project.operations):
+        targets = getattr(op, "targets", None)
+        if isinstance(targets, (tuple, list)):
+            for item in reversed(targets):
+                if isinstance(item, str) and item:
+                    return item
+        source_id = getattr(op, "source_id", None)
+        if isinstance(source_id, str) and source_id:
+            return source_id
+    return None
