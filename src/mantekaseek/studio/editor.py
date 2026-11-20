@@ -133,3 +133,12 @@ def clear_operations(project: StudioProject) -> StudioProject:
         tempo_bpm=project.tempo_bpm,
         operations=(),
     )
+
+
+def undo_last_operation(project: StudioProject) -> StudioProject:
+    return StudioProject(
+        name=project.name,
+        output_format=project.output_format,
+        tempo_bpm=project.tempo_bpm,
+        operations=project.operations[:-1],
+    )
