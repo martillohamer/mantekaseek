@@ -269,3 +269,10 @@ def estimate_beats(project: StudioProject) -> int:
         return 0
     seconds_per_beat = 60.0 / project.tempo_bpm
     return max(0, int(duration_sec // seconds_per_beat))
+
+
+def format_beats_label(project: StudioProject) -> str:
+    beats = estimate_beats(project)
+    if beats == 1:
+        return "1 pulso"
+    return f"{beats} pulsos"

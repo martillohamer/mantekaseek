@@ -367,3 +367,18 @@ def test_estimate_beats() -> None:
     # A 120 BPM: 1 beat = 0.5s -> 4.0s son 8 beats
     project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=4.0)
     assert estimate_beats(project) == 8
+
+
+def test_format_beats_label() -> None:
+    from mantekaseek.studio.editor import StudioProject, cut_segment, format_beats_label
+
+    project = StudioProject(name="sesion_120", output_format="wav", tempo_bpm=120.0)
+    assert format_beats_label(project) == "0 pulsos"
+
+    # A 120 BPM: 1 beat = 0.5s -> 1 pulso
+    one_beat = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=0.5)
+    assert format_beats_label(one_beat) == "1 pulso"
+
+    # 4.0s a 120 BPM -> 8 pulsos
+    eight_beats = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=4.0)
+    assert format_beats_label(eight_beats) == "8 pulsos"
