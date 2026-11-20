@@ -421,3 +421,12 @@ def estimate_timeline_duration_sec(project: StudioProject) -> float:
         if start_val is not None and end_val is not None:
             total += max(0.0, float(end_val) - float(start_val))
     return round(total, 6)
+
+
+def estimate_timeline_bars(project: StudioProject) -> float:
+    tempo = float(getattr(project, "tempo_bpm", 0.0) or 0.0)
+    if tempo <= 0.0:
+        return 0.0
+    duration_sec = estimate_timeline_duration_sec(project)
+    beats = duration_sec * (tempo / 60.0)
+    return round(beats / 4.0, 6)
