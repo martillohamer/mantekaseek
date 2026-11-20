@@ -178,3 +178,16 @@ def set_output_format(project: StudioProject, output_format: str) -> StudioProje
         tempo_bpm=project.tempo_bpm,
         operations=project.operations,
     )
+
+
+def rename_project(project: StudioProject, new_name: str) -> StudioProject:
+    cleaned = new_name.strip()
+    if not cleaned:
+        msg = "Nombre de proyecto invalido: no puede estar vacio"
+        raise ValueError(msg)
+    return StudioProject(
+        name=cleaned,
+        output_format=project.output_format,
+        tempo_bpm=project.tempo_bpm,
+        operations=project.operations,
+    )
