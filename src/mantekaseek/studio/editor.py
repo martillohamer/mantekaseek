@@ -214,3 +214,18 @@ def count_project_targets(project: StudioProject) -> int:
 
 def has_exportable_operations(project: StudioProject) -> bool:
     return bool(project.operations)
+
+
+_MB_PER_SECOND: dict[str, float] = {
+    "wav": 10.11,
+    "flac": 6.0,
+    "mp3": 2.4,
+}
+
+
+def estimate_export_size_mb(project: StudioProject) -> float:
+    duration_sec = estimate_timeline_duration(project)
+    if duration_sec <= 0.0:
+        return 0.0
+    rate = _MB_PER_SECOND.get(project.output_format.lower(), 2.4)
+    return round(duration_sec * rate, 2)
