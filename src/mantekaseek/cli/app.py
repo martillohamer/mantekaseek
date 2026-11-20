@@ -188,3 +188,21 @@ def midi_karaoke(
         f"pista={track.title} | tpb={track.ticks_per_beat} "
         f"| notas={len(track.notes)} | karaoke={karaoke_state}"
     )
+
+
+@app.command("sound-pad")
+def sound_pad(
+    pad_name: Annotated[
+        str,
+        typer.Argument(..., help="Nombre del sound pad (ej. airhorn, riser, impact, scratch)"),
+    ],
+    level_db: Annotated[
+        float | None,
+        typer.Option("--level-db", help="Nivel de disparo en dB para el pad"),
+    ] = None,
+) -> None:
+    from mantekaseek.dj.sound_pads import SoundPadBank, trigger_sound_pad
+
+    bank = trigger_sound_pad(SoundPadBank(), pad_name=pad_name, level_db=level_db)
+    active_level = bank.pad_levels_db.get(pad_name, 0.0)
+    typer.echo(f"pad={bank.last_triggered} | nivel_db={active_level:.1f}")

@@ -8,3 +8,15 @@ def test_trigger_sound_pad_records_last_triggered_and_level() -> None:
     updated = trigger_sound_pad(bank, pad_name="airhorn", level_db=-1.5)
     assert updated.last_triggered == "airhorn"
     assert updated.pad_levels_db["airhorn"] == -1.5
+
+
+def test_cli_sound_pad_command() -> None:
+    from typer.testing import CliRunner
+
+    from mantekaseek.cli.app import app
+
+    runner = CliRunner()
+    result = runner.invoke(app, ["sound-pad", "airhorn", "--level-db", "-2.5"])
+    assert result.exit_code == 0
+    assert "pad=airhorn" in result.stdout
+    assert "-2.5" in result.stdout
