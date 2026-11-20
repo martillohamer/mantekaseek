@@ -399,3 +399,15 @@ def build_export_summary(project: StudioProject) -> dict[str, object]:
         "missing": get_missing_export_requirements(project),
         "diagnostic": format_export_diagnostic(project),
     }
+
+
+def format_export_summary(project: StudioProject) -> str:
+    summary = build_export_summary(project)
+    missing_text = format_missing_export_requirements(project)
+    return (
+        f"Proyecto: {summary['project']}\n"
+        f"Formato: {summary['format']}\n"
+        f"Tempo: {summary['tempo']}\n"
+        f"Faltantes: {missing_text}\n"
+        f"Diagnostico: {summary['diagnostic']}"
+    )
