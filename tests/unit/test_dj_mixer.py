@@ -72,3 +72,13 @@ def test_select_best_mix_suggestions_filters_and_ranks() -> None:
         max_bpm_diff=3.0,
     )
     assert [item.track_id for item in seleccionadas] == ["t_buena_a", "t_buena_b"]
+
+
+def test_format_mix_suggestion() -> None:
+    from mantekaseek.dj.mixer import MixSuggestion, format_mix_suggestion
+
+    sug = MixSuggestion(track_id="pista_99", bpm_diff=1.5, harmonic_score=0.9)
+    texto = format_mix_suggestion(sug)
+    assert "pista_99" in texto
+    assert "1.5" in texto
+    assert "0.9" in texto
