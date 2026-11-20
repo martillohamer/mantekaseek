@@ -469,3 +469,7 @@ def list_timeline_sources(project: StudioProject) -> list[str]:
         if isinstance(source_id, str) and source_id and source_id not in seen:
             seen.append(source_id)
     return seen
+
+
+def count_timeline_sources(project: StudioProject) -> int:
+    return len(list_timeline_sources(project))
