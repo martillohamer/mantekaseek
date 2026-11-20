@@ -22,6 +22,8 @@ def _default_mics() -> tuple[MicChannel, MicChannel, MicChannel]:
 class BoothState:
     mics: tuple[MicChannel, ...] = field(default_factory=_default_mics)
     auto_mix_active: bool = False
+    recording_active: bool = False
+    session_label: str | None = None
 
     @property
     def auto_mix_button_color(self) -> str:
@@ -36,6 +38,8 @@ def toggle_auto_mix(state: BoothState) -> BoothState:
     return BoothState(
         mics=state.mics,
         auto_mix_active=not state.auto_mix_active,
+        recording_active=state.recording_active,
+        session_label=state.session_label,
     )
 
 
@@ -69,4 +73,20 @@ def configure_mic(
     return BoothState(
         mics=tuple(updated_mics),
         auto_mix_active=state.auto_mix_active,
+        recording_active=state.recording_active,
+        session_label=state.session_label,
+    )
+
+
+def toggle_session_recording(
+    state: BoothState,
+    session_label: str | None = None,
+) -> BoothState:
+    next_active = not state.recording_active
+    next_label = session_label if next_active else None
+    return BoothState(
+        mics=state.mics,
+        auto_mix_active=state.auto_mix_active,
+        recording_active=next_active,
+        session_label=next_label,
     )

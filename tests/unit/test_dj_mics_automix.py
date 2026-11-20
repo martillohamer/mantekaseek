@@ -31,3 +31,18 @@ def test_configure_mic_voice_style_and_karaoke() -> None:
     assert mics_by_channel["mic_2"].gain_db == 3.5
     assert mics_by_channel["mic_2"].karaoke_mode is True
     assert mics_by_channel["mic_1"].voice_style == "natural"
+
+
+def test_toggle_session_recording_in_booth() -> None:
+    from mantekaseek.dj.booth import BoothState, toggle_session_recording
+
+    booth = BoothState()
+    assert booth.recording_active is False
+    assert booth.session_label is None
+
+    rec_booth = toggle_session_recording(booth, session_label="fiesta_karaoke_01")
+    assert rec_booth.recording_active is True
+    assert rec_booth.session_label == "fiesta_karaoke_01"
+
+    stopped_booth = toggle_session_recording(rec_booth)
+    assert stopped_booth.recording_active is False
