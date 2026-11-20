@@ -473,3 +473,7 @@ def list_timeline_sources(project: StudioProject) -> list[str]:
 
 def count_timeline_sources(project: StudioProject) -> int:
     return len(list_timeline_sources(project))
+
+
+def has_timeline_source(project: StudioProject, source_id: str) -> bool:
+    return source_id in list_timeline_sources(project)
