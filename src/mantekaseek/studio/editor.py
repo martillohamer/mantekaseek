@@ -292,3 +292,9 @@ def count_operations(project: StudioProject) -> int:
 
 def is_ready_to_export(project: StudioProject) -> bool:
     return has_valid_tempo(project) and has_exportable_operations(project)
+
+
+def format_export_readiness(project: StudioProject) -> str:
+    if is_ready_to_export(project):
+        return "Lista para exportar"
+    return "No lista para exportar"
