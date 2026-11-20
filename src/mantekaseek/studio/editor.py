@@ -632,3 +632,20 @@ def get_timeline_gap_ratio(project: StudioProject) -> float:
 def format_timeline_gap_pct(project: StudioProject) -> str:
     pct = max(0.0, get_timeline_gap_ratio(project)) * 100.0
     return f"{pct:.1f}%"
+
+
+def get_timeline_summary(project: StudioProject) -> dict[str, object]:
+    return {
+        "segments_count": len(project.operations),
+        "total_duration_sec": get_timeline_span_sec(project),
+        "span_sec": get_timeline_span_sec(project),
+        "gap_sec": get_timeline_gap_sec(project),
+        "active_sec": get_timeline_active_sec(project),
+        "active_ratio": get_timeline_active_ratio(project),
+        "gap_ratio": get_timeline_gap_ratio(project),
+        "span_formatted": format_timeline_span(project),
+        "gap_formatted": format_timeline_gap(project),
+        "active_formatted": format_timeline_active(project),
+        "active_pct_formatted": format_timeline_active_pct(project),
+        "gap_pct_formatted": format_timeline_gap_pct(project),
+    }
