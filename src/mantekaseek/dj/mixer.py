@@ -57,3 +57,20 @@ def filter_mix_suggestions(
         for item in suggestions
         if item.harmonic_score >= min_harmonic_score and item.bpm_diff <= bpm_limit
     ]
+
+
+def select_best_mix_suggestions(
+    suggestions: list[MixSuggestion],
+    min_harmonic_score: float = 0.5,
+    max_bpm_diff: float = 4.0,
+    limit: int | None = None,
+) -> list[MixSuggestion]:
+    filtered = filter_mix_suggestions(
+        suggestions,
+        min_harmonic_score=min_harmonic_score,
+        max_bpm_diff=max_bpm_diff,
+    )
+    ranked = rank_mix_suggestions(filtered)
+    if limit is not None and limit >= 0:
+        return ranked[:limit]
+    return ranked
