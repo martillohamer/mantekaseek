@@ -653,3 +653,10 @@ def get_timeline_summary(project: StudioProject) -> dict[str, object]:
 
 def can_export_project(project: StudioProject) -> bool:
     return len(get_missing_export_requirements(project)) == 0
+
+
+def format_export_plan(plan: dict[str, object]) -> str:
+    return (
+        f"{plan['output_path']} "
+        f"[{plan['format']} @ {plan['tempo_bpm']} BPM | {plan['operations_count']} ops]"
+    )
