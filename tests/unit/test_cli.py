@@ -29,3 +29,18 @@ def test_cli_spotify_inspect_command() -> None:
     assert result.exit_code == 0
     assert "track" in result.stdout
     assert "4cOdK2wGLETKBW3PvgPWqT" in result.stdout
+
+
+def test_cli_key_convert_command() -> None:
+    result = runner.invoke(app, ["key-convert", "Am"])
+    assert result.exit_code == 0
+    assert "8A" in result.stdout
+    assert "1m" in result.stdout
+
+
+def test_cli_dj_suggest_command() -> None:
+    result = runner.invoke(
+        app,
+        ["dj-suggest", "--bpm", "126.0", "--camelot", "8A"],
+    )
+    assert result.exit_code == 0
