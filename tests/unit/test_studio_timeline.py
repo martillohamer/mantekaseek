@@ -1154,3 +1154,23 @@ def test_format_export_plan() -> None:
     assert "/tmp/out/sesion_club.wav" in formatted
     assert "wav" in formatted
     assert "128.0" in formatted
+
+
+def test_validate_export_plan() -> None:
+    import pytest
+
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        build_export_plan,
+        cut_segment,
+        validate_export_plan,
+    )
+
+    project = StudioProject(name="sesion_club", output_format="wav", tempo_bpm=128.0)
+    empty_plan = build_export_plan(project, output_dir="/tmp/out")
+    with pytest.raises(ValueError):
+        validate_export_plan(empty_plan)
+
+    ready_project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=8.0)
+    ready_plan = build_export_plan(ready_project, output_dir="/tmp/out")
+    assert validate_export_plan(ready_plan) is True
