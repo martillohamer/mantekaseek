@@ -1228,3 +1228,14 @@ def test_run_export_workflow() -> None:
     assert workflow["result"]["status"] == "ready"
     assert workflow["result"]["output_path"] == "/tmp/out/sesion_club.wav"
     assert "/tmp/out/sesion_club.wav" in str(workflow["formatted"])
+
+
+def test_build_batch_export_plan() -> None:
+    from mantekaseek.studio.editor import StudioProject, build_batch_export_plan
+
+    p1 = StudioProject(name="intro_club", output_format="wav", tempo_bpm=126.0)
+    p2 = StudioProject(name="cierre_set", output_format="mp3", tempo_bpm=128.0)
+    plans = build_batch_export_plan([p1, p2], output_dir="/tmp/out")
+    assert len(plans) == 2
+    assert plans[0]["output_path"] == "/tmp/out/intro_club.wav"
+    assert plans[1]["output_path"] == "/tmp/out/cierre_set.mp3"
