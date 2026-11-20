@@ -55,3 +55,21 @@ def test_build_export_plan_validates_format() -> None:
     bad_project = StudioProject(name="malo", output_format="ogg")
     with pytest.raises(ValueError):
         build_export_plan(bad_project, output_dir="/tmp/out")
+
+
+def test_estimate_timeline_duration() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        cut_segment,
+        estimate_timeline_duration,
+        merge_tracks,
+        paste_segment,
+    )
+
+    project = StudioProject(name="sesion_test", output_format="wav", tempo_bpm=120.0)
+    project = cut_segment(project, source_id="tema_a", start_sec=10.0, end_sec=30.0)
+    project = paste_segment(project, source_id="tema_a", at_sec=30.0, repeat=2)
+    project = merge_tracks(project, track_ids=("tema_a", "tema_b"), crossfade_sec=1.5)
+
+    duration = estimate_timeline_duration(project, block_sec=4.0)
+    assert duration == 29.5
