@@ -280,3 +280,7 @@ def format_beats_label(project: StudioProject) -> str:
 
 def has_project_targets(project: StudioProject) -> bool:
     return count_project_targets(project) > 0
+
+
+def has_operations(project: StudioProject) -> bool:
+    return len(project.operations) > 0
