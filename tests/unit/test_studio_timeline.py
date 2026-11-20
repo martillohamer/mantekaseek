@@ -223,3 +223,20 @@ def test_rename_studio_project() -> None:
 
     with pytest.raises(ValueError):
         rename_project(renamed, new_name="   ")
+
+
+def test_list_project_targets() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        cut_segment,
+        list_project_targets,
+        merge_tracks,
+        paste_segment,
+    )
+
+    project = StudioProject(name="sesion_pistas", output_format="wav", tempo_bpm=126.0)
+    project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=8.0)
+    project = paste_segment(project, source_id="tema_a", at_sec=8.0, repeat=1)
+    project = merge_tracks(project, track_ids=("tema_a", "tema_b"), crossfade_sec=1.0)
+
+    assert list_project_targets(project) == ["tema_a", "tema_b"]
