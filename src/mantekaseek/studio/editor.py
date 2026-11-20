@@ -455,3 +455,17 @@ def get_last_source_id(project: StudioProject) -> str | None:
 
 def count_cut_operations(project: StudioProject) -> int:
     return sum(1 for op in project.operations if getattr(op, "kind", None) == "cut")
+
+
+def list_timeline_sources(project: StudioProject) -> list[str]:
+    seen: list[str] = []
+    for op in project.operations:
+        targets = getattr(op, "targets", None)
+        if isinstance(targets, (tuple, list)):
+            for item in targets:
+                if isinstance(item, str) and item and item not in seen:
+                    seen.append(item)
+        source_id = getattr(op, "source_id", None)
+        if isinstance(source_id, str) and source_id and source_id not in seen:
+            seen.append(source_id)
+    return seen
