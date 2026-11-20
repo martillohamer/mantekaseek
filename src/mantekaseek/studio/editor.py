@@ -124,3 +124,12 @@ def estimate_timeline_duration(project: StudioProject, block_sec: float = 4.0) -
         elif op.kind == "merge":
             total += op.crossfade_sec
     return round(total, 6)
+
+
+def clear_operations(project: StudioProject) -> StudioProject:
+    return StudioProject(
+        name=project.name,
+        output_format=project.output_format,
+        tempo_bpm=project.tempo_bpm,
+        operations=(),
+    )
