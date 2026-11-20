@@ -335,3 +335,7 @@ def format_output_format_label(project: StudioProject) -> str:
 
 def has_output_format(project: StudioProject) -> bool:
     return format_output_format_label(project) != "FORMATO NO DEFINIDO"
+
+
+def has_project_name(project: StudioProject) -> bool:
+    return bool(project.name.strip())

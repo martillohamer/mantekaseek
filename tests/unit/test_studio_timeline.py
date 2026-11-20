@@ -544,3 +544,13 @@ def test_has_output_format() -> None:
 
     empty_project = StudioProject(name="sesion_vacia", output_format="   ", tempo_bpm=128.0)
     assert has_output_format(empty_project) is False
+
+
+def test_has_project_name() -> None:
+    from mantekaseek.studio.editor import StudioProject, has_project_name
+
+    named_project = StudioProject(name="sesion_club", output_format="wav", tempo_bpm=128.0)
+    assert has_project_name(named_project) is True
+
+    unnamed_project = StudioProject(name="   ", output_format="wav", tempo_bpm=128.0)
+    assert has_project_name(unnamed_project) is False
