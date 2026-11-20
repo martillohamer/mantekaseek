@@ -460,3 +460,13 @@ def test_format_export_readiness() -> None:
 
     ready = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=4.0)
     assert format_export_readiness(ready) == "Lista para exportar"
+
+
+def test_format_tempo_label() -> None:
+    from mantekaseek.studio.editor import StudioProject, format_tempo_label
+
+    valid_project = StudioProject(name="sesion_128", output_format="wav", tempo_bpm=128.0)
+    assert format_tempo_label(valid_project) == "128.0 BPM"
+
+    invalid_project = StudioProject(name="sesion_zero", output_format="wav", tempo_bpm=0.0)
+    assert format_tempo_label(invalid_project) == "Tempo no valido"
