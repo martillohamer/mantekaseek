@@ -1288,3 +1288,22 @@ def test_execute_batch_export_plan() -> None:
     plans = build_batch_export_plan([p1, p2], output_dir="/tmp/out")
     results = execute_batch_export_plan(plans)
     assert len(results) == 2
+
+
+def test_summarize_batch_export_results() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        build_batch_export_plan,
+        cut_segment,
+        execute_batch_export_plan,
+        summarize_batch_export_results,
+    )
+
+    base_p1 = StudioProject(name="intro_club", output_format="wav", tempo_bpm=126.0)
+    base_p2 = StudioProject(name="cierre_set", output_format="mp3", tempo_bpm=128.0)
+    p1 = cut_segment(base_p1, source_id="t1", start_sec=0.0, end_sec=4.0)
+    p2 = cut_segment(base_p2, source_id="t2", start_sec=0.0, end_sec=6.0)
+    plans = build_batch_export_plan([p1, p2], output_dir="/tmp/out")
+    results = execute_batch_export_plan(plans)
+    summary = summarize_batch_export_results(results)
+    assert summary["total_exported"] == 2
