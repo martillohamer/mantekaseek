@@ -1118,3 +1118,13 @@ def test_get_timeline_summary() -> None:
     assert summary["active_formatted"] == "00:08"
     assert summary["active_pct_formatted"] == "80.0%"
     assert summary["gap_pct_formatted"] == "20.0%"
+
+
+def test_can_export_project() -> None:
+    from mantekaseek.studio.editor import StudioProject, can_export_project, cut_segment
+
+    project = StudioProject(name="sesion_club", output_format="wav", tempo_bpm=128.0)
+    assert can_export_project(project) is False
+
+    project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=8.0)
+    assert can_export_project(project) is True
