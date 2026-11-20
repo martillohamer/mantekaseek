@@ -708,3 +708,18 @@ def test_format_export_summary() -> None:
         "Faltantes: Ninguno\n"
         "Diagnostico: Exportacion lista: sesion_club (WAV, 128.0 BPM)"
     )
+
+
+def test_estimate_timeline_duration_sec() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        cut_segment,
+        estimate_timeline_duration_sec,
+    )
+
+    project = StudioProject(name="sesion_club", output_format="wav", tempo_bpm=128.0)
+    assert estimate_timeline_duration_sec(project) == 0.0
+
+    project = cut_segment(project, source_id="tema_a", start_sec=2.0, end_sec=6.0)
+    project = cut_segment(project, source_id="tema_b", start_sec=10.0, end_sec=15.5)
+    assert estimate_timeline_duration_sec(project) == 9.5
