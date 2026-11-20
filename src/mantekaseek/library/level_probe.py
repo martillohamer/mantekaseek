@@ -1,7 +1,7 @@
 import json
 import re
 
-from mantekaseek.library.gain import AudioLevelInfo
+from mantekaseek.library.gain import AudioLevelInfo, GainPlan, plan_batch_leveling
 
 _JSON_BLOCK_RE = re.compile(r"\{[^{}]*\}", re.DOTALL)
 
@@ -34,3 +34,18 @@ def parse_loudnorm_output(track_id: str, raw_output: str) -> AudioLevelInfo:
         integrated_lufs=round(integrated_lufs, 1),
         peak_dbfs=round(peak_dbfs, 1),
     )
+
+
+def plan_gain_from_loudnorm(
+    track_id: str,
+    raw_output: str,
+    target_lufs: float = -14.0,
+    max_peak_dbfs: float = -1.0,
+) -> GainPlan:
+    info = parse_loudnorm_output(track_id=track_id, raw_output=raw_output)
+    plans = plan_batch_leveling(
+        [info],
+        target_lufs=target_lufs,
+        max_peak_dbfs=max_peak_dbfs,
+    )
+    return plans[track_id]
