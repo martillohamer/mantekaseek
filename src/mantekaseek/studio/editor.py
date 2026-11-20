@@ -594,3 +594,8 @@ def format_timeline_gap(project: StudioProject) -> str:
     total_seconds = max(0, int(round(gap_sec)))
     mins, secs = divmod(total_seconds, 60)
     return f"{mins:02d}:{secs:02d}"
+
+
+def get_timeline_active_sec(project: StudioProject) -> float:
+    active_sec = get_timeline_span_sec(project) - get_timeline_gap_sec(project)
+    return round(max(0.0, active_sec), 6)
