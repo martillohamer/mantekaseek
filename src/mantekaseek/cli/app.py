@@ -1,4 +1,5 @@
 from pathlib import Path
+
 import typer
 
 from mantekaseek import __version__
