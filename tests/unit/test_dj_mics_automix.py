@@ -69,3 +69,26 @@ def test_summarize_booth_status() -> None:
     assert "automix=RED_BLINK" in summary
     assert "rec=noche_trio" in summary
     assert "pad=airhorn" in summary
+
+
+def test_cli_booth_status_command() -> None:
+    from typer.testing import CliRunner
+
+    from mantekaseek.cli.app import app
+
+    runner = CliRunner()
+    result = runner.invoke(
+        app,
+        [
+            "booth-status",
+            "--auto-mix",
+            "--record-label",
+            "karaoke_viernes",
+            "--pad",
+            "riser",
+        ],
+    )
+    assert result.exit_code == 0
+    assert "automix=RED_BLINK" in result.stdout
+    assert "rec=karaoke_viernes" in result.stdout
+    assert "pad=riser" in result.stdout

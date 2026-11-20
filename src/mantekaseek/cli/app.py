@@ -128,3 +128,43 @@ def gain_probe(
         f"track_id={plan.track_id} gain_db={plan.gain_db} "
         f"projected_peak_dbfs={plan.projected_peak_dbfs}"
     )
+
+
+@app.command("booth-status")
+def booth_status(
+    auto_mix: bool = typer.Option(False, "--auto-mix", help="Activa el piloto automatico rojo"),
+    record_label: str | None = typer.Option(
+        None, "--record-label", help="Inicia grabacion con etiqueta de sesion"
+    ),
+    pad: str | None = typer.Option(
+        None, "--pad", help="Dispara un sound pad de cabina (ej. airhorn, riser, impact, scratch)"
+    ),
+    mic: str | None = typer.Option(
+        None, "--mic", help="Canal de microfono a modular (mic_1, mic_2 o mic_3)"
+    ),
+    mic_style: str | None = typer.Option(
+        None, "--mic-style", help="Estilo de voz para el canal indicado"
+    ),
+) -> None:
+    from mantekaseek.dj.booth import (
+        BoothState,
+        configure_mic,
+        summarize_booth_status,
+        toggle_auto_mix,
+        toggle_session_recording,
+    )
+    from mantekaseek.dj.sound_pads import SoundPadBank, trigger_sound_pad
+
+    booth = BoothState()
+    if mic and mic_style:
+        booth = configure_mic(booth, channel=mic, voice_style=mic_style)
+    if auto_mix:
+        booth = toggle_auto_mix(booth)
+    if record_label:
+        booth = toggle_session_recording(booth, session_label=record_label)
+
+    pads: SoundPadBank | None = None
+    if pad:
+        pads = trigger_sound_pad(SoundPadBank(), pad_name=pad)
+
+    typer.echo(summarize_booth_status(booth, sound_pads=pads))
