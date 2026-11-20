@@ -246,3 +246,11 @@ def format_export_overview(project: StudioProject) -> str:
 
 def has_valid_tempo(project: StudioProject) -> bool:
     return 20.0 <= project.tempo_bpm <= 300.0
+
+
+def estimate_bars(project: StudioProject) -> int:
+    duration_sec = estimate_timeline_duration(project)
+    if duration_sec <= 0.0 or project.tempo_bpm <= 0.0:
+        return 0
+    seconds_per_bar = (60.0 / project.tempo_bpm) * 4.0
+    return max(0, int(duration_sec // seconds_per_bar))

@@ -330,3 +330,14 @@ def test_has_valid_tempo() -> None:
     too_fast = StudioProject(name="rapido", output_format="wav", tempo_bpm=400.0)
     assert has_valid_tempo(too_slow) is False
     assert has_valid_tempo(too_fast) is False
+
+
+def test_estimate_bars() -> None:
+    from mantekaseek.studio.editor import StudioProject, cut_segment, estimate_bars
+
+    project = StudioProject(name="sesion_120", output_format="wav", tempo_bpm=120.0)
+    assert estimate_bars(project) == 0
+
+    # A 120 BPM: 1 beat = 0.5s, 1 compas de 4/4 = 2.0s -> 16.0s son 8 compases
+    project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=16.0)
+    assert estimate_bars(project) == 8
