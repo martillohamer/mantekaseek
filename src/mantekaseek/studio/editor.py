@@ -660,3 +660,15 @@ def format_export_plan(plan: dict[str, object]) -> str:
         f"{plan['output_path']} "
         f"[{plan['format']} @ {plan['tempo_bpm']} BPM | {plan['operations_count']} ops]"
     )
+
+
+def validate_export_plan(plan: dict[str, object]) -> bool:
+    output_path = str(plan.get("output_path", "")).strip()
+    if not output_path:
+        msg = "Ruta de exportacion vacia en el plan"
+        raise ValueError(msg)
+    operations_count = int(plan.get("operations_count", 0))
+    if operations_count <= 0:
+        msg = "El plan de exportacion requiere al menos una operacion"
+        raise ValueError(msg)
+    return True
