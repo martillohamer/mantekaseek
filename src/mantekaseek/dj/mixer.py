@@ -44,3 +44,16 @@ def rank_mix_suggestions(suggestions: list[MixSuggestion]) -> list[MixSuggestion
         suggestions,
         key=lambda item: (-item.harmonic_score, item.bpm_diff),
     )
+
+
+def filter_mix_suggestions(
+    suggestions: list[MixSuggestion],
+    min_harmonic_score: float = 0.5,
+    max_bpm_diff: float = 4.0,
+) -> list[MixSuggestion]:
+    bpm_limit = max(0.0, max_bpm_diff)
+    return [
+        item
+        for item in suggestions
+        if item.harmonic_score >= min_harmonic_score and item.bpm_diff <= bpm_limit
+    ]
