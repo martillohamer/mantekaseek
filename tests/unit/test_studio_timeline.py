@@ -287,3 +287,17 @@ def test_estimate_export_size_mb() -> None:
 
     project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=60.0)
     assert estimate_export_size_mb(project) > 0.0
+
+
+def test_format_timeline_duration() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        cut_segment,
+        format_timeline_duration,
+    )
+
+    project = StudioProject(name="sesion_reloj", output_format="wav", tempo_bpm=128.0)
+    assert format_timeline_duration(project) == "00:00"
+
+    project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=125.0)
+    assert format_timeline_duration(project) == "02:05"
