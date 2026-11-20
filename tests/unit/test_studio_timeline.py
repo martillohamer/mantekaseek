@@ -646,3 +646,24 @@ def test_format_missing_export_requirements() -> None:
     ready_project = StudioProject(name="sesion_club", output_format="wav", tempo_bpm=128.0)
     ready_project = cut_segment(ready_project, source_id="tema_a", start_sec=0.0, end_sec=4.0)
     assert format_missing_export_requirements(ready_project) == "Ninguno"
+
+
+def test_format_export_diagnostic() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        cut_segment,
+        format_export_diagnostic,
+    )
+
+    blocked = StudioProject(name="", output_format="wav", tempo_bpm=128.0)
+    assert (
+        format_export_diagnostic(blocked)
+        == "Exportacion bloqueada: falta nombre del proyecto, operaciones en la linea de tiempo"
+    )
+
+    ready = StudioProject(name="sesion_club", output_format="wav", tempo_bpm=128.0)
+    ready = cut_segment(ready, source_id="tema_a", start_sec=0.0, end_sec=4.0)
+    assert (
+        format_export_diagnostic(ready)
+        == "Exportacion lista: sesion_club (WAV, 128.0 BPM)"
+    )
