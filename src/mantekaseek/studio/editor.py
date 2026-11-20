@@ -430,3 +430,8 @@ def estimate_timeline_bars(project: StudioProject) -> float:
     duration_sec = estimate_timeline_duration_sec(project)
     beats = duration_sec * (tempo / 60.0)
     return round(beats / 4.0, 6)
+
+
+def format_timeline_bars(project: StudioProject) -> str:
+    bars = estimate_timeline_bars(project)
+    return f"{bars:.1f} compases"
