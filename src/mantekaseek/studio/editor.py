@@ -715,3 +715,14 @@ def summarize_batch_export_plan(
         "total_operations": sum(int(plan["operations_count"]) for plan in plans),
         "output_paths": [str(plan["output_path"]) for plan in plans],
     }
+
+
+def format_batch_export_summary(summary: dict[str, object]) -> str:
+    total_projects = summary.get("total_projects", 0)
+    total_operations = summary.get("total_operations", 0)
+    raw_paths = summary.get("output_paths", [])
+    paths_text = ", ".join(str(item) for item in raw_paths) if isinstance(raw_paths, list) else ""
+    return (
+        f"Lote: {total_projects} proyectos | "
+        f"{total_operations} operaciones | {paths_text}"
+    )
