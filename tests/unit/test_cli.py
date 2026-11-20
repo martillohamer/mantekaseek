@@ -44,3 +44,12 @@ def test_cli_dj_suggest_command() -> None:
         ["dj-suggest", "--bpm", "126.0", "--camelot", "8A"],
     )
     assert result.exit_code == 0
+
+
+def test_cli_gain_plan_command() -> None:
+    result = runner.invoke(
+        app,
+        ["gain-plan", "--lufs", "-20.0", "--peak", "-6.0", "--target-lufs", "-14.0"],
+    )
+    assert result.exit_code == 0
+    assert "+5.0dB" in result.stdout or "5.0" in result.stdout
