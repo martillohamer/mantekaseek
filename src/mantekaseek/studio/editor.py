@@ -614,3 +614,8 @@ def get_timeline_active_ratio(project: StudioProject) -> float:
         return 0.0
     active_sec = get_timeline_active_sec(project)
     return round(active_sec / span_sec, 6)
+
+
+def format_timeline_active_pct(project: StudioProject) -> str:
+    pct = max(0.0, get_timeline_active_ratio(project)) * 100.0
+    return f"{pct:.1f}%"
