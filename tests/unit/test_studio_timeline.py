@@ -609,3 +609,22 @@ def test_format_export_config_status() -> None:
     complete = StudioProject(name="sesion_club", output_format="wav", tempo_bpm=128.0)
     complete = cut_segment(complete, source_id="tema_a", start_sec=0.0, end_sec=4.0)
     assert format_export_config_status(complete) == "Configuracion completa"
+
+
+def test_get_missing_export_requirements() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        cut_segment,
+        get_missing_export_requirements,
+    )
+
+    empty_project = StudioProject(name="   ", output_format="   ", tempo_bpm=128.0)
+    assert get_missing_export_requirements(empty_project) == [
+        "nombre del proyecto",
+        "formato de salida",
+        "operaciones en la linea de tiempo",
+    ]
+
+    ready_project = StudioProject(name="sesion_club", output_format="wav", tempo_bpm=128.0)
+    ready_project = cut_segment(ready_project, source_id="tema_a", start_sec=0.0, end_sec=4.0)
+    assert get_missing_export_requirements(ready_project) == []
