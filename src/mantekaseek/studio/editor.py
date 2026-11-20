@@ -627,3 +627,8 @@ def get_timeline_gap_ratio(project: StudioProject) -> float:
         return 0.0
     gap_sec = get_timeline_gap_sec(project)
     return round(gap_sec / span_sec, 6)
+
+
+def format_timeline_gap_pct(project: StudioProject) -> str:
+    pct = max(0.0, get_timeline_gap_ratio(project)) * 100.0
+    return f"{pct:.1f}%"
