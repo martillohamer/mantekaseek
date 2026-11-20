@@ -54,3 +54,21 @@ def test_filter_mix_suggestions_by_harmony_and_bpm() -> None:
         max_bpm_diff=3.0,
     )
     assert [item.track_id for item in filtradas] == ["valida"]
+
+
+def test_select_best_mix_suggestions_filters_and_ranks() -> None:
+    from mantekaseek.dj.mixer import MixSuggestion, select_best_mix_suggestions
+
+    candidatos = [
+        MixSuggestion(track_id="t_bpm_lejos", bpm_diff=7.5, harmonic_score=1.0),
+        MixSuggestion(track_id="t_buena_b", bpm_diff=2.0, harmonic_score=0.8),
+        MixSuggestion(track_id="t_buena_a", bpm_diff=0.5, harmonic_score=0.8),
+        MixSuggestion(track_id="t_armonia_baja", bpm_diff=0.2, harmonic_score=0.2),
+    ]
+
+    seleccionadas = select_best_mix_suggestions(
+        candidatos,
+        min_harmonic_score=0.7,
+        max_bpm_diff=3.0,
+    )
+    assert [item.track_id for item in seleccionadas] == ["t_buena_a", "t_buena_b"]
