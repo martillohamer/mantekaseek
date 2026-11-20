@@ -698,3 +698,10 @@ def run_export_workflow(project: StudioProject, output_dir: str) -> dict[str, ob
         "result": result,
         "formatted": format_export_result(result),
     }
+
+
+def build_batch_export_plan(
+    projects: list[StudioProject],
+    output_dir: str,
+) -> list[dict[str, object]]:
+    return [build_export_plan(project, output_dir=output_dir) for project in projects]
