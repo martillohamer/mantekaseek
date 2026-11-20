@@ -9,7 +9,7 @@ def test_calculate_safe_gain_raises_quiet_and_lowers_loud_tracks() -> None:
     quiet = AudioLevelInfo(track_id="1", integrated_lufs=-20.0, peak_dbfs=-6.0)
     loud = AudioLevelInfo(track_id="2", integrated_lufs=-8.0, peak_dbfs=-0.2)
 
-    assert calculate_safe_gain_db(quiet, target_lufs=-14.0, max_peak_dbfs=-1.0) == 6.0
+    assert calculate_safe_gain_db(quiet, target_lufs=-14.0, max_peak_dbfs=-1.0) == 5.0
     assert calculate_safe_gain_db(loud, target_lufs=-14.0, max_peak_dbfs=-1.0) == -6.0
 
 
