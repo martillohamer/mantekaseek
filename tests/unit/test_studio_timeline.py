@@ -470,3 +470,23 @@ def test_format_tempo_label() -> None:
 
     invalid_project = StudioProject(name="sesion_zero", output_format="wav", tempo_bpm=0.0)
     assert format_tempo_label(invalid_project) == "Tempo no valido"
+
+
+def test_format_project_summary() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        cut_segment,
+        format_project_summary,
+    )
+
+    project = StudioProject(name="sesion_club", output_format="wav", tempo_bpm=128.0)
+    assert (
+        format_project_summary(project)
+        == "sesion_club | 128.0 BPM | WAV | No lista para exportar"
+    )
+
+    ready = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=4.0)
+    assert (
+        format_project_summary(ready)
+        == "sesion_club | 128.0 BPM | WAV | Lista para exportar"
+    )
