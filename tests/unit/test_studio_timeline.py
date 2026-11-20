@@ -1089,3 +1089,32 @@ def test_format_timeline_gap_pct() -> None:
     project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=6.0)
     project = cut_segment(project, source_id="tema_b", start_sec=8.0, end_sec=10.0)
     assert format_timeline_gap_pct(project) == "20.0%"
+
+
+def test_get_timeline_summary() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        cut_segment,
+        get_timeline_summary,
+    )
+
+    project = StudioProject(name="sesion_club", output_format="wav", tempo_bpm=128.0)
+    empty_summary = get_timeline_summary(project)
+    assert empty_summary["segments_count"] == 0
+    assert empty_summary["active_pct_formatted"] == "0.0%"
+    assert empty_summary["gap_pct_formatted"] == "0.0%"
+
+    project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=6.0)
+    project = cut_segment(project, source_id="tema_b", start_sec=8.0, end_sec=10.0)
+    summary = get_timeline_summary(project)
+    assert summary["segments_count"] == 2
+    assert summary["span_sec"] == 10.0
+    assert summary["gap_sec"] == 2.0
+    assert summary["active_sec"] == 8.0
+    assert summary["active_ratio"] == 0.8
+    assert summary["gap_ratio"] == 0.2
+    assert summary["span_formatted"] == "00:10"
+    assert summary["gap_formatted"] == "00:02"
+    assert summary["active_formatted"] == "00:08"
+    assert summary["active_pct_formatted"] == "80.0%"
+    assert summary["gap_pct_formatted"] == "20.0%"
