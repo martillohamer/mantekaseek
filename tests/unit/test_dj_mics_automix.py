@@ -92,3 +92,20 @@ def test_cli_booth_status_command() -> None:
     assert "automix=RED_BLINK" in result.stdout
     assert "rec=karaoke_viernes" in result.stdout
     assert "pad=riser" in result.stdout
+
+
+def test_plan_automix_transition_respects_auto_mix_state() -> None:
+    from mantekaseek.dj.booth import BoothState, plan_automix_transition, toggle_auto_mix
+    from mantekaseek.dj.mixer import MixSuggestion
+
+    candidates = [
+        MixSuggestion(track_id="t_baja", bpm_diff=0.5, harmonic_score=0.2),
+        MixSuggestion(track_id="t_top", bpm_diff=1.0, harmonic_score=0.95),
+    ]
+    off_booth = BoothState()
+    assert plan_automix_transition(off_booth, candidates) is None
+
+    on_booth = toggle_auto_mix(off_booth)
+    chosen = plan_automix_transition(on_booth, candidates)
+    assert chosen is not None
+    assert chosen.track_id == "t_top"
