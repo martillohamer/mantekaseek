@@ -37,3 +37,21 @@ def test_summarize_studio_project() -> None:
     assert "wav" in summary
     assert "128.0" in summary
     assert "ops=3" in summary
+
+
+def test_build_export_plan_validates_format() -> None:
+    import pytest
+
+    from mantekaseek.studio.editor import StudioProject, build_export_plan, cut_segment
+
+    project = StudioProject(name="master_demo", output_format="flac", tempo_bpm=125.0)
+    project = cut_segment(project, source_id="loop_1", start_sec=0.0, end_sec=8.0)
+
+    plan = build_export_plan(project, output_dir="/tmp/out")
+    assert plan["output_path"] == "/tmp/out/master_demo.flac"
+    assert plan["format"] == "flac"
+    assert plan["operations_count"] == 1
+
+    bad_project = StudioProject(name="malo", output_format="ogg")
+    with pytest.raises(ValueError):
+        build_export_plan(bad_project, output_dir="/tmp/out")
