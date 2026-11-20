@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Annotated
 
 import typer
 
@@ -168,3 +169,22 @@ def booth_status(
         pads = trigger_sound_pad(SoundPadBank(), pad_name=pad)
 
     typer.echo(summarize_booth_status(booth, sound_pads=pads))
+
+
+
+@app.command("midi-karaoke")
+def midi_karaoke(
+    midi_path: Annotated[Path, typer.Argument(..., help="Ruta al archivo MIDI (.mid) de karaoke")],
+    karaoke: Annotated[
+        bool,
+        typer.Option("--karaoke/--no-karaoke", help="Activa o desactiva modo karaoke"),
+    ] = True,
+) -> None:
+    from mantekaseek.dj.midi_karaoke import load_midi_karaoke_track
+
+    track = load_midi_karaoke_track(midi_path, karaoke_enabled=karaoke)
+    karaoke_state = "ON" if track.karaoke_enabled else "OFF"
+    typer.echo(
+        f"pista={track.title} | tpb={track.ticks_per_beat} "
+        f"| notas={len(track.notes)} | karaoke={karaoke_state}"
+    )
