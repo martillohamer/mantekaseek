@@ -524,3 +524,13 @@ def test_format_studio_report() -> None:
         format_studio_report(edited)
         == "sesion_club | 128.0 BPM | WAV | Lista para exportar | 1 operaciones | 4.0s"
     )
+
+
+def test_format_output_format_label() -> None:
+    from mantekaseek.studio.editor import StudioProject, format_output_format_label
+
+    wav_project = StudioProject(name="sesion_wav", output_format=" wav ", tempo_bpm=128.0)
+    assert format_output_format_label(wav_project) == "WAV"
+
+    empty_project = StudioProject(name="sesion_vacia", output_format="   ", tempo_bpm=128.0)
+    assert format_output_format_label(empty_project) == "FORMATO NO DEFINIDO"

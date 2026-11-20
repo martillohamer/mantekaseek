@@ -324,3 +324,10 @@ def format_studio_report(project: StudioProject) -> str:
     project_part = format_project_summary(project)
     timeline_part = format_timeline_summary(project)
     return f"{project_part} | {timeline_part}"
+
+
+def format_output_format_label(project: StudioProject) -> str:
+    cleaned = project.output_format.strip().upper()
+    if not cleaned:
+        return "FORMATO NO DEFINIDO"
+    return cleaned
