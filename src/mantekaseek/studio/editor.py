@@ -354,3 +354,9 @@ def has_complete_export_config(project: StudioProject) -> bool:
         and has_output_format(project)
         and is_ready_to_export(project)
     )
+
+
+def format_export_config_status(project: StudioProject) -> str:
+    if has_complete_export_config(project):
+        return "Configuracion completa"
+    return "Configuracion incompleta"

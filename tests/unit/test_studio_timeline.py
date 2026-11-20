@@ -594,3 +594,18 @@ def test_has_complete_export_config() -> None:
     complete = StudioProject(name="sesion_club", output_format="wav", tempo_bpm=128.0)
     complete = cut_segment(complete, source_id="tema_a", start_sec=0.0, end_sec=4.0)
     assert has_complete_export_config(complete) is True
+
+
+def test_format_export_config_status() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        cut_segment,
+        format_export_config_status,
+    )
+
+    incomplete = StudioProject(name="", output_format="wav", tempo_bpm=128.0)
+    assert format_export_config_status(incomplete) == "Configuracion incompleta"
+
+    complete = StudioProject(name="sesion_club", output_format="wav", tempo_bpm=128.0)
+    complete = cut_segment(complete, source_id="tema_a", start_sec=0.0, end_sec=4.0)
+    assert format_export_config_status(complete) == "Configuracion completa"
