@@ -46,3 +46,26 @@ def test_toggle_session_recording_in_booth() -> None:
 
     stopped_booth = toggle_session_recording(rec_booth)
     assert stopped_booth.recording_active is False
+
+
+def test_summarize_booth_status() -> None:
+    from mantekaseek.dj.booth import (
+        BoothState,
+        configure_mic,
+        summarize_booth_status,
+        toggle_auto_mix,
+        toggle_session_recording,
+    )
+    from mantekaseek.dj.sound_pads import SoundPadBank, trigger_sound_pad
+
+    booth = BoothState()
+    booth = configure_mic(booth, channel="mic_1", voice_style="echo")
+    booth = toggle_auto_mix(booth)
+    booth = toggle_session_recording(booth, session_label="noche_trio")
+    pads = trigger_sound_pad(SoundPadBank(), pad_name="airhorn", level_db=-2.0)
+
+    summary = summarize_booth_status(booth, sound_pads=pads)
+    assert "mic_1:echo" in summary
+    assert "automix=RED_BLINK" in summary
+    assert "rec=noche_trio" in summary
+    assert "pad=airhorn" in summary
