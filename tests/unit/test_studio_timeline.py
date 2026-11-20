@@ -240,3 +240,22 @@ def test_list_project_targets() -> None:
     project = merge_tracks(project, track_ids=("tema_a", "tema_b"), crossfade_sec=1.0)
 
     assert list_project_targets(project) == ["tema_a", "tema_b"]
+
+
+def test_count_project_targets() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        count_project_targets,
+        cut_segment,
+        merge_tracks,
+        paste_segment,
+    )
+
+    project = StudioProject(name="sesion_conteo", output_format="wav", tempo_bpm=126.0)
+    assert count_project_targets(project) == 0
+
+    project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=8.0)
+    project = paste_segment(project, source_id="tema_a", at_sec=8.0, repeat=1)
+    project = merge_tracks(project, track_ids=("tema_a", "tema_b"), crossfade_sec=1.0)
+
+    assert count_project_targets(project) == 2
