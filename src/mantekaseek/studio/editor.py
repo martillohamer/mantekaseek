@@ -339,3 +339,9 @@ def has_output_format(project: StudioProject) -> bool:
 
 def has_project_name(project: StudioProject) -> bool:
     return bool(project.name.strip())
+
+
+def format_project_name(project: StudioProject) -> str:
+    if has_project_name(project):
+        return project.name.strip()
+    return "PROYECTO SIN NOMBRE"
