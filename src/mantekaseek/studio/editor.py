@@ -435,3 +435,7 @@ def estimate_timeline_bars(project: StudioProject) -> float:
 def format_timeline_bars(project: StudioProject) -> str:
     bars = estimate_timeline_bars(project)
     return f"{bars:.1f} compases"
+
+
+def has_timeline_operations(project: StudioProject) -> bool:
+    return bool(project.operations)
