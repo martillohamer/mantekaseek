@@ -781,3 +781,18 @@ def test_get_last_source_id() -> None:
     project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=4.0)
     project = cut_segment(project, source_id="tema_b", start_sec=5.0, end_sec=9.0)
     assert get_last_source_id(project) == "tema_b"
+
+
+def test_count_cut_operations() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        count_cut_operations,
+        cut_segment,
+    )
+
+    project = StudioProject(name="sesion_club", output_format="wav", tempo_bpm=128.0)
+    assert count_cut_operations(project) == 0
+
+    project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=4.0)
+    project = cut_segment(project, source_id="tema_b", start_sec=4.0, end_sec=8.0)
+    assert count_cut_operations(project) == 2

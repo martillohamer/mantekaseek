@@ -452,3 +452,6 @@ def get_last_source_id(project: StudioProject) -> str | None:
         if isinstance(source_id, str) and source_id:
             return source_id
     return None
+
+def count_cut_operations(project: StudioProject) -> int:
+    return sum(1 for op in project.operations if getattr(op, "kind", None) == "cut")
