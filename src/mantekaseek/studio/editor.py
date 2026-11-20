@@ -649,3 +649,7 @@ def get_timeline_summary(project: StudioProject) -> dict[str, object]:
         "active_pct_formatted": format_timeline_active_pct(project),
         "gap_pct_formatted": format_timeline_gap_pct(project),
     }
+
+
+def can_export_project(project: StudioProject) -> bool:
+    return len(get_missing_export_requirements(project)) == 0
