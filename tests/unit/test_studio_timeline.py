@@ -1257,3 +1257,17 @@ def test_summarize_batch_export_plan() -> None:
     assert summary["total_projects"] == 2
     assert summary["total_operations"] == 1
     assert summary["output_paths"] == ["/tmp/out/intro_club.wav", "/tmp/out/cierre_set.mp3"]
+
+
+def test_format_batch_export_summary() -> None:
+    from mantekaseek.studio.editor import format_batch_export_summary
+
+    summary = {
+        "total_projects": 2,
+        "total_operations": 1,
+        "output_paths": ["/tmp/out/intro_club.wav", "/tmp/out/cierre_set.mp3"],
+    }
+    text = format_batch_export_summary(summary)
+    assert "2 proyectos" in text
+    assert "1 operaciones" in text
+    assert "/tmp/out/intro_club.wav" in text
