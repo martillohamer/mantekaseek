@@ -378,3 +378,13 @@ def format_missing_export_requirements(project: StudioProject) -> str:
     if not missing:
         return "Ninguno"
     return ", ".join(missing)
+
+
+def format_export_diagnostic(project: StudioProject) -> str:
+    if has_complete_export_config(project):
+        project_label = format_project_name(project)
+        output_fmt = format_output_format_label(project)
+        tempo_label = format_tempo_label(project)
+        return f"Exportacion lista: {project_label} ({output_fmt}, {tempo_label})"
+    missing_label = format_missing_export_requirements(project)
+    return f"Exportacion bloqueada: falta {missing_label}"
