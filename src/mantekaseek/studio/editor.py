@@ -682,3 +682,10 @@ def execute_export_plan(plan: dict[str, object]) -> dict[str, object]:
         "format": plan["format"],
         "operations_count": plan["operations_count"],
     }
+
+
+def format_export_result(result: dict[str, object]) -> str:
+    return (
+        f"[{result['status']}] {result['output_path']} "
+        f"({result['format']}, {result['operations_count']} ops)"
+    )
