@@ -85,3 +85,10 @@ def merge_tracks(
         tempo_bpm=project.tempo_bpm,
         operations=(*project.operations, op),
     )
+
+
+def summarize_studio_project(project: StudioProject) -> str:
+    return (
+        f"proyecto={project.name} | formato={project.output_format} "
+        f"| bpm={project.tempo_bpm:.1f} | ops={len(project.operations)}"
+    )
