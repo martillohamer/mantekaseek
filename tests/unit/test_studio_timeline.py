@@ -392,3 +392,13 @@ def test_has_project_targets() -> None:
 
     project = cut_segment(project, source_id="tema_base", start_sec=0.0, end_sec=8.0)
     assert has_project_targets(project) is True
+
+
+def test_has_operations() -> None:
+    from mantekaseek.studio.editor import StudioProject, cut_segment, has_operations
+
+    project = StudioProject(name="sesion_vacia", output_format="wav", tempo_bpm=128.0)
+    assert has_operations(project) is False
+
+    project = cut_segment(project, source_id="tema_base", start_sec=0.0, end_sec=4.0)
+    assert has_operations(project) is True
