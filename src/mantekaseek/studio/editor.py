@@ -732,3 +732,15 @@ def execute_batch_export_plan(
     plans: list[dict[str, object]],
 ) -> list[dict[str, object]]:
     return [execute_export_plan(plan) for plan in plans]
+
+
+def summarize_batch_export_results(
+    results: list[dict[str, object]],
+) -> dict[str, object]:
+    exported_paths = [
+        str(item["output_path"]) for item in results if "output_path" in item
+    ]
+    return {
+        "total_exported": len(results),
+        "exported_paths": exported_paths,
+    }
