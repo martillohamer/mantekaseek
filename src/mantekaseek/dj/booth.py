@@ -37,3 +37,36 @@ def toggle_auto_mix(state: BoothState) -> BoothState:
         mics=state.mics,
         auto_mix_active=not state.auto_mix_active,
     )
+
+
+def configure_mic(
+    state: BoothState,
+    channel: str,
+    voice_style: str | None = None,
+    gain_db: float | None = None,
+    karaoke_mode: bool | None = None,
+    active: bool | None = None,
+) -> BoothState:
+    found = False
+    updated_mics: list[MicChannel] = []
+    for mic in state.mics:
+        if mic.channel == channel:
+            found = True
+            updated_mics.append(
+                MicChannel(
+                    channel=mic.channel,
+                    active=mic.active if active is None else active,
+                    gain_db=mic.gain_db if gain_db is None else gain_db,
+                    karaoke_mode=mic.karaoke_mode if karaoke_mode is None else karaoke_mode,
+                    voice_style=mic.voice_style if voice_style is None else voice_style,
+                )
+            )
+        else:
+            updated_mics.append(mic)
+    if not found:
+        msg = f"Canal de microfono desconocido: {channel}"
+        raise ValueError(msg)
+    return BoothState(
+        mics=tuple(updated_mics),
+        auto_mix_active=state.auto_mix_active,
+    )
