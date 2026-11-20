@@ -418,3 +418,31 @@ def test_count_operations() -> None:
     project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=4.0)
     project = paste_segment(project, source_id="tema_b", at_sec=4.0)
     assert count_operations(project) == 2
+
+
+def test_is_ready_to_export() -> None:
+    import pytest
+
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        cut_segment,
+        is_ready_to_export,
+        set_project_tempo,
+    )
+
+    project = StudioProject(name="sesion_export", output_format="wav", tempo_bpm=128.0)
+    assert is_ready_to_export(project) is False
+
+    with pytest.raises(ValueError):
+        set_project_tempo(project, 0.0)
+
+    invalid_bpm_project = StudioProject(
+        name="sesion_export", output_format="wav", tempo_bpm=0.0
+    )
+    invalid_bpm_project = cut_segment(
+        invalid_bpm_project, source_id="tema_a", start_sec=0.0, end_sec=4.0
+    )
+    assert is_ready_to_export(invalid_bpm_project) is False
+
+    ready = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=4.0)
+    assert is_ready_to_export(ready) is True
