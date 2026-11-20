@@ -172,3 +172,19 @@ def test_operations_for_target() -> None:
 
     ops_a = operations_for_target(project, target_id="tema_a")
     assert [op.kind for op in ops_a] == ["cut", "merge"]
+
+
+def test_set_project_tempo() -> None:
+    import pytest
+
+    from mantekaseek.studio.editor import StudioProject, cut_segment, set_project_tempo
+
+    project = StudioProject(name="sesion_bpm", output_format="wav", tempo_bpm=120.0)
+    project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=8.0)
+
+    updated = set_project_tempo(project, bpm=132.0)
+    assert updated.tempo_bpm == 132.0
+    assert len(updated.operations) == 1
+
+    with pytest.raises(ValueError):
+        set_project_tempo(updated, bpm=0.0)
