@@ -1271,3 +1271,20 @@ def test_format_batch_export_summary() -> None:
     assert "2 proyectos" in text
     assert "1 operaciones" in text
     assert "/tmp/out/intro_club.wav" in text
+
+
+def test_execute_batch_export_plan() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        build_batch_export_plan,
+        cut_segment,
+        execute_batch_export_plan,
+    )
+
+    base_p1 = StudioProject(name="intro_club", output_format="wav", tempo_bpm=126.0)
+    base_p2 = StudioProject(name="cierre_set", output_format="mp3", tempo_bpm=128.0)
+    p1 = cut_segment(base_p1, source_id="t1", start_sec=0.0, end_sec=4.0)
+    p2 = cut_segment(base_p2, source_id="t2", start_sec=0.0, end_sec=6.0)
+    plans = build_batch_export_plan([p1, p2], output_dir="/tmp/out")
+    results = execute_batch_export_plan(plans)
+    assert len(results) == 2

@@ -726,3 +726,9 @@ def format_batch_export_summary(summary: dict[str, object]) -> str:
         f"Lote: {total_projects} proyectos | "
         f"{total_operations} operaciones | {paths_text}"
     )
+
+
+def execute_batch_export_plan(
+    plans: list[dict[str, object]],
+) -> list[dict[str, object]]:
+    return [execute_export_plan(plan) for plan in plans]
