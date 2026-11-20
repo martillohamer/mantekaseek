@@ -858,3 +858,18 @@ def test_get_timeline_end_sec() -> None:
     project = cut_segment(project, source_id="tema_a", start_sec=2.0, end_sec=6.0)
     project = cut_segment(project, source_id="tema_b", start_sec=10.0, end_sec=14.5)
     assert get_timeline_end_sec(project) == 14.5
+
+
+def test_get_timeline_start_sec() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        cut_segment,
+        get_timeline_start_sec,
+    )
+
+    project = StudioProject(name="sesion_club", output_format="wav", tempo_bpm=128.0)
+    assert get_timeline_start_sec(project) == 0.0
+
+    project = cut_segment(project, source_id="tema_a", start_sec=5.0, end_sec=9.0)
+    project = cut_segment(project, source_id="tema_b", start_sec=2.5, end_sec=6.0)
+    assert get_timeline_start_sec(project) == 2.5
