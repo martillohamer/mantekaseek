@@ -918,3 +918,18 @@ def test_get_timeline_span_bars() -> None:
     project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=4.0)
     project = cut_segment(project, source_id="tema_b", start_sec=4.0, end_sec=8.0)
     assert get_timeline_span_bars(project) == 4.0
+
+
+def test_format_timeline_span_bars() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        cut_segment,
+        format_timeline_span_bars,
+    )
+
+    project = StudioProject(name="sesion_club", output_format="wav", tempo_bpm=120.0)
+    assert format_timeline_span_bars(project) == "0.00"
+
+    project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=4.0)
+    project = cut_segment(project, source_id="tema_b", start_sec=4.0, end_sec=8.0)
+    assert format_timeline_span_bars(project) == "4.00"
