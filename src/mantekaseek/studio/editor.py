@@ -606,3 +606,11 @@ def format_timeline_active(project: StudioProject) -> str:
     total_seconds = max(0, int(round(active_sec)))
     mins, secs = divmod(total_seconds, 60)
     return f"{mins:02d}:{secs:02d}"
+
+
+def get_timeline_active_ratio(project: StudioProject) -> float:
+    span_sec = get_timeline_span_sec(project)
+    if span_sec <= 0.0:
+        return 0.0
+    active_sec = get_timeline_active_sec(project)
+    return round(active_sec / span_sec, 6)
