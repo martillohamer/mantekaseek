@@ -705,3 +705,13 @@ def build_batch_export_plan(
     output_dir: str,
 ) -> list[dict[str, object]]:
     return [build_export_plan(project, output_dir=output_dir) for project in projects]
+
+
+def summarize_batch_export_plan(
+    plans: list[dict[str, object]],
+) -> dict[str, object]:
+    return {
+        "total_projects": len(plans),
+        "total_operations": sum(int(plan["operations_count"]) for plan in plans),
+        "output_paths": [str(plan["output_path"]) for plan in plans],
+    }
