@@ -149,3 +149,7 @@ def count_operations_by_kind(project: StudioProject) -> dict[str, int]:
     for op in project.operations:
         counts[op.kind] = counts.get(op.kind, 0) + 1
     return counts
+
+
+def operations_for_target(project: StudioProject, target_id: str) -> list[StudioOperation]:
+    return [op for op in project.operations if target_id in op.targets]

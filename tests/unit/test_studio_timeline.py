@@ -154,3 +154,21 @@ def test_count_operations_by_kind() -> None:
 
     counts = count_operations_by_kind(project)
     assert counts == {"cut": 2, "paste": 1, "merge": 1}
+
+
+def test_operations_for_target() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        cut_segment,
+        merge_tracks,
+        operations_for_target,
+        paste_segment,
+    )
+
+    project = StudioProject(name="sesion_pistas", output_format="wav", tempo_bpm=126.0)
+    project = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=12.0)
+    project = paste_segment(project, source_id="tema_b", at_sec=12.0, repeat=1)
+    project = merge_tracks(project, track_ids=("tema_a", "tema_b"), crossfade_sec=1.0)
+
+    ops_a = operations_for_target(project, target_id="tema_a")
+    assert [op.kind for op in ops_a] == ["cut", "merge"]
