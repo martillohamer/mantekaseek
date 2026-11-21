@@ -816,3 +816,16 @@ def validate_batch_export_plan(plans: list[dict[str, object]]) -> bool:
     if not plans:
         return False
     return all(validate_export_plan(plan) for plan in plans)
+
+
+def _is_valid_export_plan(plan: dict[str, object]) -> bool:
+    try:
+        return validate_export_plan(plan)
+    except ValueError:
+        return False
+
+
+def filter_valid_export_plans(
+    plans: list[dict[str, object]],
+) -> list[dict[str, object]]:
+    return [plan for plan in plans if _is_valid_export_plan(plan)]
