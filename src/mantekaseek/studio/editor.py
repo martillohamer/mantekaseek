@@ -314,7 +314,6 @@ def format_project_summary(project: StudioProject) -> str:
     return f"{project_label} | {tempo_label} | {output_fmt} | {readiness_label}"
 
 
-
 def format_timeline_summary(project: StudioProject) -> str:
     op_count = len(project.operations)
     total_sec = sum(max(0.0, op.end_sec - op.start_sec) for op in project.operations)
@@ -349,11 +348,7 @@ def format_project_name(project: StudioProject) -> str:
 
 
 def has_complete_export_config(project: StudioProject) -> bool:
-    return (
-        has_project_name(project)
-        and has_output_format(project)
-        and is_ready_to_export(project)
-    )
+    return has_project_name(project) and has_output_format(project) and is_ready_to_export(project)
 
 
 def format_export_config_status(project: StudioProject) -> str:
@@ -452,6 +447,7 @@ def get_last_source_id(project: StudioProject) -> str | None:
         if isinstance(source_id, str) and source_id:
             return source_id
     return None
+
 
 def count_cut_operations(project: StudioProject) -> int:
     return sum(1 for op in project.operations if getattr(op, "kind", None) == "cut")
@@ -722,10 +718,7 @@ def format_batch_export_summary(summary: dict[str, object]) -> str:
     total_operations = summary.get("total_operations", 0)
     raw_paths = summary.get("output_paths", [])
     paths_text = ", ".join(str(item) for item in raw_paths) if isinstance(raw_paths, list) else ""
-    return (
-        f"Lote: {total_projects} proyectos | "
-        f"{total_operations} operaciones | {paths_text}"
-    )
+    return f"Lote: {total_projects} proyectos | {total_operations} operaciones | {paths_text}"
 
 
 def execute_batch_export_plan(
@@ -737,9 +730,7 @@ def execute_batch_export_plan(
 def summarize_batch_export_results(
     results: list[dict[str, object]],
 ) -> dict[str, object]:
-    exported_paths = [
-        str(item["output_path"]) for item in results if "output_path" in item
-    ]
+    exported_paths = [str(item["output_path"]) for item in results if "output_path" in item]
     return {
         "total_exported": len(results),
         "exported_paths": exported_paths,
@@ -749,9 +740,7 @@ def summarize_batch_export_results(
 def format_batch_export_results_summary(summary: dict[str, object]) -> str:
     total_exported = summary.get("total_exported", 0)
     raw_paths = summary.get("exported_paths", [])
-    paths_text = (
-        ", ".join(str(item) for item in raw_paths) if isinstance(raw_paths, list) else ""
-    )
+    paths_text = ", ".join(str(item) for item in raw_paths) if isinstance(raw_paths, list) else ""
     return f"Exportacion lote: {total_exported} archivos | {paths_text}"
 
 
@@ -774,11 +763,7 @@ def filter_export_plans_by_format(
     fmt: str,
 ) -> list[dict[str, object]]:
     target = fmt.strip().lower()
-    return [
-        plan
-        for plan in plans
-        if str(plan.get("format", "")).strip().lower() == target
-    ]
+    return [plan for plan in plans if str(plan.get("format", "")).strip().lower() == target]
 
 
 def count_export_plans_by_format(

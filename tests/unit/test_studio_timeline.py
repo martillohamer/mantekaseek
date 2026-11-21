@@ -436,9 +436,7 @@ def test_is_ready_to_export() -> None:
     with pytest.raises(ValueError):
         set_project_tempo(project, 0.0)
 
-    invalid_bpm_project = StudioProject(
-        name="sesion_export", output_format="wav", tempo_bpm=0.0
-    )
+    invalid_bpm_project = StudioProject(name="sesion_export", output_format="wav", tempo_bpm=0.0)
     invalid_bpm_project = cut_segment(
         invalid_bpm_project, source_id="tema_a", start_sec=0.0, end_sec=4.0
     )
@@ -481,15 +479,11 @@ def test_format_project_summary() -> None:
 
     project = StudioProject(name="sesion_club", output_format="wav", tempo_bpm=128.0)
     assert (
-        format_project_summary(project)
-        == "sesion_club | 128.0 BPM | WAV | No lista para exportar"
+        format_project_summary(project) == "sesion_club | 128.0 BPM | WAV | No lista para exportar"
     )
 
     ready = cut_segment(project, source_id="tema_a", start_sec=0.0, end_sec=4.0)
-    assert (
-        format_project_summary(ready)
-        == "sesion_club | 128.0 BPM | WAV | Lista para exportar"
-    )
+    assert format_project_summary(ready) == "sesion_club | 128.0 BPM | WAV | Lista para exportar"
 
 
 def test_format_timeline_summary() -> None:
@@ -663,10 +657,7 @@ def test_format_export_diagnostic() -> None:
 
     ready = StudioProject(name="sesion_club", output_format="wav", tempo_bpm=128.0)
     ready = cut_segment(ready, source_id="tema_a", start_sec=0.0, end_sec=4.0)
-    assert (
-        format_export_diagnostic(ready)
-        == "Exportacion lista: sesion_club (WAV, 128.0 BPM)"
-    )
+    assert format_export_diagnostic(ready) == "Exportacion lista: sesion_club (WAV, 128.0 BPM)"
 
 
 def test_build_export_summary() -> None:
