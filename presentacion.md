@@ -97,7 +97,7 @@ El proyecto comenzó con un enfoque en CLI básico y ha evolucionado a través d
 
 - **Ramas activas:** `dev` (rama actual), `main` (protegida, flujo `--no-ff`).
 - **Último commit:** *Merge de `format_export_plan` en dev* (e565192), que integra `build_export_plan` con formateo de planes de exportación.
-- **Suite de tests:** **131 tests pasando** (todos los tests unitarios), confirmados con `.venv/bin/pytest`.
+- **Suite de tests:** **158 tests pasando** (todos los tests unitarios), confirmados con `.venv/bin/pytest`.
 - **Linter:** **`ruff` sin advertencias** (`ruff check src tests` pasa limpio).
 - **Convenciones:** Mensajes de commit en castellano; nunca *push* directo a `main`; ramas de trabajo siempre desde `dev`; fusiones `--no-ff`.
 - **Entorno de ejecución:** Python 3.12.3 en WSL; `.venv/bin/pytest` para tests; `.venv/bin/ruff` para linting.
@@ -106,7 +106,7 @@ El proyecto comenzó con un enfoque en CLI básico y ha evolucionado a través d
 
 ### Reglas de Oro del Repositorio
 
-1. **Tests primero:** 131 tests unitarios; `pytest` en `.venv/bin/pytest`. Todo nuevo código debe tener tests correspondientes.
+1. **Tests primero:** 158 tests (unitarios e integración); `pytest` en `.venv/bin/pytest`. Todo nuevo código debe tener tests correspondientes.
 2. **Linter estricto:** `ruff` con `--select E,F,I,UP,B`; cero advertencias. Ejecutar `.venv/bin/ruff check src tests` antes de commit.
 3. **Flujo Git:** Ramas de features desde `dev`; merge `--no-ff` a `main`; commits en castellano; *never* push directo a `main`.
 4. **Tipo de Python:** `target-version = "py312"` en `pyproject.toml`; uso de `dataclasses` frozen/slots; type hints completos.
@@ -119,7 +119,7 @@ El proyecto comenzó con un enfoque en CLI básico y ha evolucionado a través d
 
 ### Entorno de Ejecución
 
-- `.venv/bin/pytest` → ejecuta la suite completa (131 tests, ~2s).
+- `.venv/bin/pytest` → ejecuta la suite completa (158 tests, ~2s).
 - `.venv/bin/ruff check src tests` → verifica estilo y calidad.
 - `.venv/bin/ruff check src tests --select E,F,I,UP,B` → modo estricto.
 - Python 3.12.3 requerida (`requires-python = ">=3.12"` en pyproject.toml).
