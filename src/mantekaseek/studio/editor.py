@@ -796,3 +796,10 @@ def group_export_plans_by_format(
         fmt_key = str(plan.get("format", "")).strip().lower()
         grouped.setdefault(fmt_key, []).append(plan)
     return grouped
+
+
+def summarize_plans_by_format(
+    plans: list[dict[str, object]],
+) -> dict[str, int]:
+    grouped = group_export_plans_by_format(plans)
+    return {fmt_key: len(items) for fmt_key, items in grouped.items()}
