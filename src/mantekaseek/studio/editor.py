@@ -803,3 +803,10 @@ def summarize_plans_by_format(
 ) -> dict[str, int]:
     grouped = group_export_plans_by_format(plans)
     return {fmt_key: len(items) for fmt_key, items in grouped.items()}
+
+
+def format_plans_by_format(counts: dict[str, int]) -> str:
+    if not counts:
+        return "Formatos: ninguno"
+    parts = [f"{fmt_key} ({total})" for fmt_key, total in counts.items()]
+    return f"Formatos: {', '.join(parts)}"
