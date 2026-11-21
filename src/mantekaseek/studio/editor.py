@@ -810,3 +810,9 @@ def format_plans_by_format(counts: dict[str, int]) -> str:
         return "Formatos: ninguno"
     parts = [f"{fmt_key} ({total})" for fmt_key, total in counts.items()]
     return f"Formatos: {', '.join(parts)}"
+
+
+def validate_batch_export_plan(plans: list[dict[str, object]]) -> bool:
+    if not plans:
+        return False
+    return all(validate_export_plan(plan) for plan in plans)
