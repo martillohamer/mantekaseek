@@ -1529,3 +1529,19 @@ def test_summarize_valid_batch_results() -> None:
     summary = summarize_valid_batch_results(plans)
     assert isinstance(summary, dict) and len(summary) >= 1
     assert sum(v for v in summary.values() if isinstance(v, int)) == 1
+
+
+def test_format_valid_batch_results() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        build_batch_export_plan,
+        cut_segment,
+        format_valid_batch_results,
+    )
+
+    base_p1 = StudioProject(name="intro_club", output_format="wav", tempo_bpm=126.0)
+    p1 = cut_segment(base_p1, source_id="t1", start_sec=0.0, end_sec=4.0)
+    p2 = StudioProject(name="vacio", output_format="mp3", tempo_bpm=128.0)
+    plans = build_batch_export_plan([p1, p2], output_dir="/tmp/out")
+    text = format_valid_batch_results(plans)
+    assert isinstance(text, str) and len(text) > 0
