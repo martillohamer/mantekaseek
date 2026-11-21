@@ -786,3 +786,13 @@ def count_export_plans_by_format(
     fmt: str,
 ) -> int:
     return len(filter_export_plans_by_format(plans, fmt))
+
+
+def group_export_plans_by_format(
+    plans: list[dict[str, object]],
+) -> dict[str, list[dict[str, object]]]:
+    grouped: dict[str, list[dict[str, object]]] = {}
+    for plan in plans:
+        fmt_key = str(plan.get("format", "")).strip().lower()
+        grouped.setdefault(fmt_key, []).append(plan)
+    return grouped
