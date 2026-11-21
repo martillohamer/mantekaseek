@@ -767,3 +767,15 @@ def run_batch_export_workflow(
         "summary": summary,
         "formatted": format_batch_export_results_summary(summary),
     }
+
+
+def filter_export_plans_by_format(
+    plans: list[dict[str, object]],
+    fmt: str,
+) -> list[dict[str, object]]:
+    target = fmt.strip().lower()
+    return [
+        plan
+        for plan in plans
+        if str(plan.get("format", "")).strip().lower() == target
+    ]
