@@ -39,16 +39,16 @@ Consulta `NOTICE.md` para ver los proyectos de referencia que inspiraron las ide
 ### Estado Actual
 
 - **Ramas:** `dev` (actual), `main` (flujo `--no-ff`, sin *push* directo).
-- **Tests:** **131 tests pasando** confirmados con `.venv/bin/pytest`.
+- **Tests:** **156 tests pasando** confirmados con `.venv/bin/pytest`.
 - **Linter:** **`ruff` sin advertencias** confirmado con `.venv/bin/ruff check src tests`.
-- **Último merge:** `integrar format_export_plan en dev` (e565192).
+- **Último merge:** `integrar format_valid_batch_results en dev` (d7df6db).
 
 ### Flujos Destacados
 
 - **Descarga inteligente:** `SearchCoordinator` prioriza Soulseek, cae back a yt-dlp.
 - **Mezclas armónicas:** `harmonic_compatible` en `dj/controller.py` con compatibilidad de BPM (±4.0).
 - **Nivelación de ganancia:** `level_probe.py` parsea salida `loudnorm` de `ffmpeg`; `gain.py` calcula gan segura con techo de pico.
-- **Mini Studio:** `editor.py` con `cut_segment`/`paste_segment`/`merge_tracks`; `build_export_plan` con duración, formato y tamaño estimado; métricas de timeline (bars, beats, gaps, active/pct).
+- **Mini Studio:** `editor.py` con `cut_segment`/`paste_segment`/`merge_tracks`; `build_export_plan` con duración, formato y tamaño estimado; métricas de timeline (bars, beats, gaps, active/pct). y helpers de lotes validos (`execute_valid_batch_export_plan`, `summarize_valid_batch_results`, `format_valid_batch_results`).
 - **3 micrófonos:** `booth.py` con `MicChannel`, `voice_style`, `karaoke_mode`, ganancia por canal.
 
 ## Empezar
