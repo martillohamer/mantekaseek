@@ -85,3 +85,22 @@ def test_cli_midi_karaoke_missing_file_clean_error(tmp_path: Path) -> None:
     assert result.exit_code == 1
     assert "Traceback" not in result.output
     assert "no existe" in result.output.lower()
+
+
+def test_cli_gain_probe_accepts_max_peak_option() -> None:
+    result = runner.invoke(
+        app,
+        [
+            "gain-probe",
+            "--track-id",
+            "t-1",
+            "--loudnorm-output",
+            '{"input_i":"-18.0","input_tp":"-6.0"}',
+            "--target-lufs",
+            "-14.0",
+            "--max-peak",
+            "-1.0",
+        ],
+    )
+    assert result.exit_code == 0
+    assert "t-1" in result.stdout
