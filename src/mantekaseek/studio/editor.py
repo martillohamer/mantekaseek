@@ -833,3 +833,9 @@ def filter_valid_export_plans(
 
 def count_valid_export_plans(plans: list[dict[str, object]]) -> int:
     return len(filter_valid_export_plans(plans))
+
+
+def filter_invalid_export_plans(
+    plans: list[dict[str, object]],
+) -> list[dict[str, object]]:
+    return [plan for plan in plans if not _is_valid_export_plan(plan)]
