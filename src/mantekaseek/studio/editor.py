@@ -779,3 +779,10 @@ def filter_export_plans_by_format(
         for plan in plans
         if str(plan.get("format", "")).strip().lower() == target
     ]
+
+
+def count_export_plans_by_format(
+    plans: list[dict[str, object]],
+    fmt: str,
+) -> int:
+    return len(filter_export_plans_by_format(plans, fmt))
