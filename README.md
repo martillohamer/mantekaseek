@@ -61,3 +61,6 @@ mantekaseek --help      # Ver comandos CLI
 ```
 
 Consulta `presentacion.md` para la visión arquitectónica completa y `HANDOFF.md` para la guía de desarrollo.
+## Pruebas de integración
+
+- `tests/integration/test_end_to_end_pipeline.py`: verifica de extremo a extremo la planificación de descarga (`plan_track_download`), la nivelación de ganancia (`plan_batch_leveling`) y la edición/exportación por lotes en `StudioProject`.
