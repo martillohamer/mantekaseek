@@ -43,9 +43,7 @@ def plan_track_download(
         chosen = ranked[0]
         return DownloadPlan(
             candidate=chosen,
-            output_bitrate_kbps=effective_output_bitrate(
-                chosen.bitrate_kbps, target_bitrate_kbps
-            ),
+            output_bitrate_kbps=effective_output_bitrate(chosen.bitrate_kbps, target_bitrate_kbps),
             used_fallback=False,
         )
 

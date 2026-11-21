@@ -109,13 +109,9 @@ def gain_plan(
 @app.command("gain-probe")
 def gain_probe(
     track_id: str = typer.Option(..., "--track-id", help="Identificador de la pista"),
-    loudnorm_output: str = typer.Option(
-        ..., "--loudnorm-output", help="Salida de loudnorm"
-    ),
+    loudnorm_output: str = typer.Option(..., "--loudnorm-output", help="Salida de loudnorm"),
     target_lufs: float = typer.Option(-14.0, "--target-lufs", help="LUFS objetivo"),
-    max_peak_dbfs: float = typer.Option(
-        -1.0, "--max-peak-dbfs", help="Pico max dBFS"
-    ),
+    max_peak_dbfs: float = typer.Option(-1.0, "--max-peak-dbfs", help="Pico max dBFS"),
 ) -> None:
     from mantekaseek.library.level_probe import plan_gain_from_loudnorm
 
@@ -169,7 +165,6 @@ def booth_status(
         pads = trigger_sound_pad(SoundPadBank(), pad_name=pad)
 
     typer.echo(summarize_booth_status(booth, sound_pads=pads))
-
 
 
 @app.command("midi-karaoke")
