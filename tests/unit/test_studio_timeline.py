@@ -1346,3 +1346,18 @@ def test_filter_export_plans_by_format() -> None:
     wav_plans = filter_export_plans_by_format(plans, "wav")
     assert len(wav_plans) == 1
     assert wav_plans[0]["output_path"] == "/tmp/out/intro_club.wav"
+
+
+def test_count_export_plans_by_format() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        build_batch_export_plan,
+        count_export_plans_by_format,
+    )
+
+    p1 = StudioProject(name="intro_club", output_format="wav", tempo_bpm=126.0)
+    p2 = StudioProject(name="cierre_set", output_format="mp3", tempo_bpm=128.0)
+    p3 = StudioProject(name="warm_up", output_format="wav", tempo_bpm=124.0)
+    plans = build_batch_export_plan([p1, p2, p3], output_dir="/tmp/out")
+    assert count_export_plans_by_format(plans, "wav") == 2
+    assert count_export_plans_by_format(plans, "mp3") == 1
