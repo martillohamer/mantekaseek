@@ -863,3 +863,10 @@ def summarize_valid_batch_results(
 ) -> dict[str, int]:
     results = execute_valid_batch_export_plan(plans)
     return summarize_batch_export_results(results)
+
+
+def format_valid_batch_results(
+    plans: list[dict[str, object]],
+) -> str:
+    results = execute_valid_batch_export_plan(plans)
+    return f"Ejecutados validos: {len(results)}"
