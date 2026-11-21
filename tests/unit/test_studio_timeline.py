@@ -1400,3 +1400,17 @@ def test_format_plans_by_format() -> None:
     text = format_plans_by_format({"wav": 2, "mp3": 1})
     assert "wav (2)" in text
     assert "mp3 (1)" in text
+
+
+def test_validate_batch_export_plan() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        build_batch_export_plan,
+        cut_segment,
+        validate_batch_export_plan,
+    )
+
+    base_p1 = StudioProject(name="intro_club", output_format="wav", tempo_bpm=126.0)
+    p1 = cut_segment(base_p1, source_id="t1", start_sec=0.0, end_sec=4.0)
+    plans = build_batch_export_plan([p1], output_dir="/tmp/out")
+    assert validate_batch_export_plan(plans) is True
