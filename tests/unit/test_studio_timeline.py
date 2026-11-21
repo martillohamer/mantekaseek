@@ -1392,3 +1392,11 @@ def test_summarize_plans_by_format() -> None:
     plans = build_batch_export_plan([p1, p2, p3], output_dir="/tmp/out")
     counts = summarize_plans_by_format(plans)
     assert counts == {"wav": 2, "mp3": 1}
+
+
+def test_format_plans_by_format() -> None:
+    from mantekaseek.studio.editor import format_plans_by_format
+
+    text = format_plans_by_format({"wav": 2, "mp3": 1})
+    assert "wav (2)" in text
+    assert "mp3 (1)" in text
