@@ -744,3 +744,12 @@ def summarize_batch_export_results(
         "total_exported": len(results),
         "exported_paths": exported_paths,
     }
+
+
+def format_batch_export_results_summary(summary: dict[str, object]) -> str:
+    total_exported = summary.get("total_exported", 0)
+    raw_paths = summary.get("exported_paths", [])
+    paths_text = (
+        ", ".join(str(item) for item in raw_paths) if isinstance(raw_paths, list) else ""
+    )
+    return f"Exportacion lote: {total_exported} archivos | {paths_text}"
