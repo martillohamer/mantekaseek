@@ -53,3 +53,35 @@ def test_cli_gain_plan_command() -> None:
     )
     assert result.exit_code == 0
     assert "+5.0dB" in result.stdout or "5.0" in result.stdout
+
+
+def test_cli_help_lists_descriptions_for_commands() -> None:
+    result = runner.invoke(app, ["--help"])
+    assert result.exit_code == 0
+    for cmd in (
+        "info",
+        "db-init",
+        "spotify-inspect",
+        "key-convert",
+        "dj-suggest",
+        "gain-plan",
+        "gain-probe",
+        "booth-status",
+        "midi-karaoke",
+        "sound-pad",
+        "studio-plan",
+    ):
+        assert cmd in result.stdout
+    assert "Revisa niveles de audio" in result.stdout
+    assert "Muestra o actualiza el estado de la cabina" in result.stdout
+    assert "Inspecciona una pista MIDI" in result.stdout
+    assert "Dispara un sound pad" in result.stdout
+    assert "Prepara y resume un plan de exportacion" in result.stdout
+
+
+def test_cli_midi_karaoke_missing_file_clean_error(tmp_path: Path) -> None:
+    missing = tmp_path / "no_existe.mid"
+    result = runner.invoke(app, ["midi-karaoke", str(missing)])
+    assert result.exit_code == 1
+    assert "Traceback" not in result.output
+    assert "no existe" in result.output.lower()

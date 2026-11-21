@@ -113,6 +113,7 @@ def gain_probe(
     target_lufs: float = typer.Option(-14.0, "--target-lufs", help="LUFS objetivo"),
     max_peak_dbfs: float = typer.Option(-1.0, "--max-peak-dbfs", help="Pico max dBFS"),
 ) -> None:
+    """Revisa niveles de audio desde la salida de loudnorm y calcula ganancia segura."""
     from mantekaseek.library.level_probe import plan_gain_from_loudnorm
 
     plan = plan_gain_from_loudnorm(
@@ -143,6 +144,7 @@ def booth_status(
         None, "--mic-style", help="Estilo de voz para el canal indicado"
     ),
 ) -> None:
+    """Muestra o actualiza el estado de la cabina DJ, micros, grabacion y pads."""
     from mantekaseek.dj.booth import (
         BoothState,
         configure_mic,
@@ -175,9 +177,21 @@ def midi_karaoke(
         typer.Option("--karaoke/--no-karaoke", help="Activa o desactiva modo karaoke"),
     ] = True,
 ) -> None:
+    """Inspecciona una pista MIDI de karaoke y muestra su informacion principal."""
     from mantekaseek.dj.midi_karaoke import load_midi_karaoke_track
 
-    track = load_midi_karaoke_track(midi_path, karaoke_enabled=karaoke)
+    try:
+        track = load_midi_karaoke_track(midi_path, karaoke_enabled=karaoke)
+    except FileNotFoundError as exc:
+        typer.secho(
+            f"Error: el archivo MIDI no existe ({midi_path})",
+            err=True,
+            fg=typer.colors.RED,
+        )
+        raise typer.Exit(code=1) from exc
+    except ValueError as exc:
+        typer.secho(f"Error: {exc}", err=True, fg=typer.colors.RED)
+        raise typer.Exit(code=1) from exc
     karaoke_state = "ON" if track.karaoke_enabled else "OFF"
     typer.echo(
         f"pista={track.title} | tpb={track.ticks_per_beat} "
@@ -196,6 +210,7 @@ def sound_pad(
         typer.Option("--level-db", help="Nivel de disparo en dB para el pad"),
     ] = None,
 ) -> None:
+    """Dispara un sound pad de cabina y muestra su nivel activo en dB."""
     from mantekaseek.dj.sound_pads import SoundPadBank, trigger_sound_pad
 
     bank = trigger_sound_pad(SoundPadBank(), pad_name=pad_name, level_db=level_db)
@@ -222,6 +237,7 @@ def studio_plan(
         typer.Option("--output-dir", help="Directorio de salida para la exportacion"),
     ] = "out",
 ) -> None:
+    """Prepara y resume un plan de exportacion para un proyecto de Mini Studio."""
     from mantekaseek.studio.editor import (
         StudioProject,
         build_export_plan,
@@ -236,3 +252,7 @@ def studio_plan(
     summary = summarize_studio_project(project)
     plan = build_export_plan(project, output_dir=output_dir)
     typer.echo(f"{summary} | salida={plan['output_path']}")
+
+
+if __name__ == "__main__":
+    app()
