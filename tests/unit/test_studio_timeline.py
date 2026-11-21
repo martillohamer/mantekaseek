@@ -1478,3 +1478,20 @@ def test_count_invalid_export_plans() -> None:
     p2 = StudioProject(name="vacio", output_format="mp3", tempo_bpm=128.0)
     plans = build_batch_export_plan([p1, p2], output_dir="/tmp/out")
     assert count_invalid_export_plans(plans) == 1
+
+
+def test_format_batch_validation_summary() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        build_batch_export_plan,
+        cut_segment,
+        format_batch_validation_summary,
+    )
+
+    base_p1 = StudioProject(name="intro_club", output_format="wav", tempo_bpm=126.0)
+    p1 = cut_segment(base_p1, source_id="t1", start_sec=0.0, end_sec=4.0)
+    p2 = StudioProject(name="vacio", output_format="mp3", tempo_bpm=128.0)
+    plans = build_batch_export_plan([p1, p2], output_dir="/tmp/out")
+    text = format_batch_validation_summary(plans)
+    assert "1 validos" in text
+    assert "1 invalidos" in text
