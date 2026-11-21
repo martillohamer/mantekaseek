@@ -1361,3 +1361,19 @@ def test_count_export_plans_by_format() -> None:
     plans = build_batch_export_plan([p1, p2, p3], output_dir="/tmp/out")
     assert count_export_plans_by_format(plans, "wav") == 2
     assert count_export_plans_by_format(plans, "mp3") == 1
+
+
+def test_group_export_plans_by_format() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        build_batch_export_plan,
+        group_export_plans_by_format,
+    )
+
+    p1 = StudioProject(name="intro_club", output_format="wav", tempo_bpm=126.0)
+    p2 = StudioProject(name="cierre_set", output_format="mp3", tempo_bpm=128.0)
+    p3 = StudioProject(name="warm_up", output_format="wav", tempo_bpm=124.0)
+    plans = build_batch_export_plan([p1, p2, p3], output_dir="/tmp/out")
+    grouped = group_export_plans_by_format(plans)
+    assert len(grouped["wav"]) == 2
+    assert len(grouped["mp3"]) == 1
