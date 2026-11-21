@@ -753,3 +753,17 @@ def format_batch_export_results_summary(summary: dict[str, object]) -> str:
         ", ".join(str(item) for item in raw_paths) if isinstance(raw_paths, list) else ""
     )
     return f"Exportacion lote: {total_exported} archivos | {paths_text}"
+
+
+def run_batch_export_workflow(
+    projects: list[StudioProject],
+    output_dir: str,
+) -> dict[str, object]:
+    plans = build_batch_export_plan(projects, output_dir=output_dir)
+    results = execute_batch_export_plan(plans)
+    summary = summarize_batch_export_results(results)
+    return {
+        "results": results,
+        "summary": summary,
+        "formatted": format_batch_export_results_summary(summary),
+    }
