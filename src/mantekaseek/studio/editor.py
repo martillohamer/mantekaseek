@@ -843,3 +843,9 @@ def filter_invalid_export_plans(
 
 def count_invalid_export_plans(plans: list[dict[str, object]]) -> int:
     return len(filter_invalid_export_plans(plans))
+
+
+def format_batch_validation_summary(plans: list[dict[str, object]]) -> str:
+    valid = count_valid_export_plans(plans)
+    invalid = count_invalid_export_plans(plans)
+    return f"Validacion lote: {valid} validos, {invalid} invalidos"
