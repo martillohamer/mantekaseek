@@ -856,3 +856,10 @@ def execute_valid_batch_export_plan(
 ) -> list[dict[str, object]]:
     valid_plans = filter_valid_export_plans(plans)
     return execute_batch_export_plan(valid_plans)
+
+
+def summarize_valid_batch_results(
+    plans: list[dict[str, object]],
+) -> dict[str, int]:
+    results = execute_valid_batch_export_plan(plans)
+    return summarize_batch_export_results(results)
