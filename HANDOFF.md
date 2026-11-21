@@ -17,7 +17,7 @@ Esta guía tiene como objetivo permitir que cualquier desarrollador o agente IA 
   source .venv/bin/activate
   ```
 - **Herramientas clave en `.venv/bin/`:**
-  - `pytest` — Ejecutar suite de tests (131 tests unitarios)
+  - `pytest` — Ejecutar suite de tests (158 tests (unitarios e integración))
   - `ruff` — Linter y formateador (`ruff check` y `ruff format`)
   - `python` — Interpretador Python 3.12
 
@@ -180,7 +180,7 @@ pip install -e ".[dev]"  # instala typer, pytest, ruff y dev deps
 ```bash
 git status                    # Debe estar limpio
 git branch -a                 # Ver ramas: dev, main, feature/*
-.venv/bin/pytest              # Todos los tests deben pasar (131)
+.venv/bin/pytest              # Todos los tests deben pasar (158)
 .venv/bin/ruff check src tests  # Sin advertencias
 ```
 
@@ -225,7 +225,7 @@ git push origin dev
 
 ### Tests
 
-- **131 tests unitarios** en `tests/unit/`.
+- **158 tests (unitarios e integración)** en `tests/unit/`.
 - Usar `.venv/bin/pytest` para ejecutar.
 - Los tests deben pasar limpio antes de cualquier commit.
 - Agregar tests para nueva funcionalidad; no modificar tests existentes sin necesidad.
