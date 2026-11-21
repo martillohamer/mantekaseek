@@ -29,7 +29,6 @@ def test_plan_batch_leveling_aligns_tracks() -> None:
     assert plans["b"].gain_db == -4.0
 
 
-
 def test_is_gain_clipped() -> None:
     from mantekaseek.library.gain import AudioLevelInfo, is_gain_clipped, plan_batch_leveling
 

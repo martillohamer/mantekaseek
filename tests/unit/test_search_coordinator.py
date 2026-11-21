@@ -46,9 +46,7 @@ def test_coordinator_uses_slskd_first_without_youtube_fallback() -> None:
             }
         ),
     )
-    yt_runner = FakeYtdlpRunner(
-        [{"id": "yt1", "title": "Track", "duration": 240, "abr": 128}]
-    )
+    yt_runner = FakeYtdlpRunner([{"id": "yt1", "title": "Track", "duration": 240, "abr": 128}])
     yt = YtdlpSearcher(runner=yt_runner)
 
     coord = SearchCoordinator(slskd_client=slskd, ytdlp_searcher=yt)
@@ -65,9 +63,7 @@ def test_coordinator_falls_back_to_ytdlp_when_slskd_empty() -> None:
         api_key="k",
         transport=FakeHttpTransport({"responses": []}),
     )
-    yt_runner = FakeYtdlpRunner(
-        [{"id": "yt1", "title": "Track", "duration": 240, "abr": 128}]
-    )
+    yt_runner = FakeYtdlpRunner([{"id": "yt1", "title": "Track", "duration": 240, "abr": 128}])
     yt = YtdlpSearcher(runner=yt_runner)
 
     coord = SearchCoordinator(slskd_client=slskd, ytdlp_searcher=yt)

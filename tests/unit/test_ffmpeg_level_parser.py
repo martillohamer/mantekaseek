@@ -85,7 +85,7 @@ def test_cli_gain_probe_from_loudnorm_json() -> None:
     from mantekaseek.cli.app import app
 
     runner = CliRunner()
-    payload = "{\"input_i\": \"-19.00\", \"input_tp\": \"-3.00\"}"
+    payload = '{"input_i": "-19.00", "input_tp": "-3.00"}'
     result = runner.invoke(
         app,
         [
