@@ -1331,3 +1331,18 @@ def test_run_batch_export_workflow() -> None:
     out = run_batch_export_workflow([p1, p2], output_dir="/tmp/out")
     assert out["summary"]["total_exported"] == 2
     assert "2 archivos" in str(out["formatted"])
+
+
+def test_filter_export_plans_by_format() -> None:
+    from mantekaseek.studio.editor import (
+        StudioProject,
+        build_batch_export_plan,
+        filter_export_plans_by_format,
+    )
+
+    p1 = StudioProject(name="intro_club", output_format="wav", tempo_bpm=126.0)
+    p2 = StudioProject(name="cierre_set", output_format="mp3", tempo_bpm=128.0)
+    plans = build_batch_export_plan([p1, p2], output_dir="/tmp/out")
+    wav_plans = filter_export_plans_by_format(plans, "wav")
+    assert len(wav_plans) == 1
+    assert wav_plans[0]["output_path"] == "/tmp/out/intro_club.wav"
