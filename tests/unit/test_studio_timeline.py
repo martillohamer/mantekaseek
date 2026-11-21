@@ -1319,3 +1319,15 @@ def test_format_batch_export_results_summary() -> None:
     text = format_batch_export_results_summary(summary)
     assert "2 archivos" in text
     assert "/tmp/out/intro_club.wav" in text
+
+
+def test_run_batch_export_workflow() -> None:
+    from mantekaseek.studio.editor import StudioProject, cut_segment, run_batch_export_workflow
+
+    base_p1 = StudioProject(name="intro_club", output_format="wav", tempo_bpm=126.0)
+    base_p2 = StudioProject(name="cierre_set", output_format="mp3", tempo_bpm=128.0)
+    p1 = cut_segment(base_p1, source_id="t1", start_sec=0.0, end_sec=4.0)
+    p2 = cut_segment(base_p2, source_id="t2", start_sec=0.0, end_sec=6.0)
+    out = run_batch_export_workflow([p1, p2], output_dir="/tmp/out")
+    assert out["summary"]["total_exported"] == 2
+    assert "2 archivos" in str(out["formatted"])
